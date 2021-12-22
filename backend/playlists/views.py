@@ -6,7 +6,7 @@ from songdata.setlist import Setlist
 
 
 def index(request):
-    artist = "Stray From The Path"
+    artist = "Acacia Strain"
     sets = Setlist(artist)
     mbid = sets.get_mbid()
     setlists = sets.get_setlist(mbid,4)
