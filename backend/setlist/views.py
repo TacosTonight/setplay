@@ -18,7 +18,7 @@ class SetlistView(APIView):
 
     def get_most_recent_set(self, artist_name):
         # Loop through pages of get_setlists 
-        # Return setlist if song is >= 5
+        # Return setlist if song is >= 5 
         return None 
 
     def get_setlists(self, artist_name, page_number):
