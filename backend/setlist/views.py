@@ -6,20 +6,37 @@ from rest_framework.views import APIView
 
 class SetlistView(APIView):
     ARTIST_QUERY_PARAM = "artistName"
-    HEADERS = {'x-api-key': '', 'Accept': 'application/json'}
+    HEADERS = {'x-api-key': 'YyyAf5VEbxqLp-ETIOqdKSPeKxRncbt9yL_6', 'Accept': 'application/json'}
 
     def get(self, request):
         artist_name = request.GET.get(self.ARTIST_QUERY_PARAM)
         if artist_name == None:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        # Will eventually return the formatted most recent setlist 
-        # instead of just get_setlists
-        return Response(self.get_setlists(artist_name,1), status=status.HTTP_200_OK)
+        return Response(self.build_setlist_response(artist_name), status=status.HTTP_200_OK)
 
-    def get_most_recent_set(self, artist_name):
-        # Loop through pages of get_setlists 
-        # Return setlist if song is >= 5
-        return None 
+    def build_setlist_response(self, artist_name):
+        most_recent = self.get_most_recent_set(artist_name, 5)
+        meta_data = self.parse_meta_data(most_recent)
+        songs = self.parse_song_names_from_setlist(most_recent)
+        return {'setlist':{'metadata':meta_data, 'songs':songs}}
+
+    def get_most_recent_set(self, artist_name, max_page_search):
+        for i in range (1, max_page_search + 1):
+            setlists = self.get_setlists(artist_name, i).get("setlist")
+            for setlist in setlists:
+                if self.get_song_count(setlist) > 5:
+                    return setlist
+
+    def parse_meta_data(self, setlist):
+        artist_info = setlist.get("artist")
+        venue_info = setlist.get("venue")
+        tour = setlist.get("tour")
+        return {'artist': artist_info, 'venue': venue_info, 'tour': tour}
+
+    def parse_song_names_from_setlist(self, setlist):
+        parsed_setlist = self.parse_set(setlist)
+        setlist = self.parse_subsets_from_set(parsed_setlist)
+        return self.flatten_subsets(setlist)
 
     def get_setlists(self, artist_name, page_number):
         url = 'https://api.setlist.fm/rest/1.0/search/setlists'
@@ -43,6 +60,12 @@ class SetlistView(APIView):
 
     def parse_set(self, setlist):
         return setlist.get("sets").get("set")
+
+    def parse_subsets_from_set(self, set):
+        return [sub_setlist.get("song") for sub_setlist in set]
+
+    def flatten_subsets(self, subsets):
+        return [song.get("name") for sublist in subsets for song in sublist]
 
     def setlist_JSON_response(self, url, params = None):
         r = requests.get(url, params = params, headers = self.HEADERS)
