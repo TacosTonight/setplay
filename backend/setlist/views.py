@@ -38,9 +38,11 @@ class SetlistView(APIView):
         artist_info = setlist.get("artist")
         venue_info = setlist.get("venue")
         tour = setlist.get("tour")
+        # Day Month Year
+        event_date = setlist.get("eventDate")
         if None in (artist_info, venue_info, tour):
             return None
-        return {'artist': artist_info, 'venue': venue_info, 'tour': tour}
+        return {'artist': artist_info, 'venue': venue_info, 'tour': tour, 'date':event_date}
    
     def parse_song_names_from_setlist(self, setlist):
         if setlist is None:

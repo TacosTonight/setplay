@@ -173,6 +173,7 @@ meta_data = {
         "disambiguation": "Fake Band",
         "url": ""
     },
+    "eventDate": "30-10-2022",
     "venue": {
         "id": "abc123",
         "name": "Venue",
@@ -218,7 +219,8 @@ parsed_meta_data = {
     },
     "url": ""
   },
-  "tour": { "name": "Tour" }
+  "tour": { "name": "Tour" },
+  "date": "30-10-2022",
 }
 
 page_of_setlists = {
@@ -657,7 +659,8 @@ set_list_response = {
         },
         "url": "https://www.setlist.fm/venue/the-key-club-leeds-england-6bd47a32.html"
       },
-      "tour": { "name": "A Eulogy for Those Still Here" }
+      "tour": { "name": "A Eulogy for Those Still Here" },
+      "date": "27-10-2022",
     },
     "songs": [
       "07/26/2020",
