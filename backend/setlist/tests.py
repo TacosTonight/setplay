@@ -73,3 +73,16 @@ class SetlistViewTest(TestCase):
     @patch("setlist.views.SetlistView.get_setlists", return_value = page_of_setlists)
     def test_get_most_recent_set(self, mock_get_setlists):
         self.assertEquals(self.view.get_most_recent_set("asdf", 1), most_recent_set)
+
+    @patch("setlist.views.SetlistView.get_setlists", return_value = page_of_setlists_all_empty)
+    def test_get_most_recent_set_all_empty(self, mock_get_setlists):
+        self.assertIsNone(self.view.get_most_recent_set("asdf", 1))
+
+    # build_setlist_response()
+    @patch("setlist.views.SetlistView.get_most_recent_set", return_value = most_recent_set)
+    def test_build_setlist_response(self, mock_get_most_recent_set):
+        self.assertEquals(self.view.build_setlist_response("asdf"), set_list_response)
+
+    @patch("setlist.views.SetlistView.get_most_recent_set", return_value = most_recent_set_empty)
+    def test_build_setlist_response_empty_set(self, mock_get_most_recent_set):
+        self.assertIsNone(self.view.build_setlist_response("asdf"))

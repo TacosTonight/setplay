@@ -12,12 +12,17 @@ class SetlistView(APIView):
         artist_name = request.GET.get(self.ARTIST_QUERY_PARAM)
         if artist_name == None:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(self.build_setlist_response(artist_name), status=status.HTTP_200_OK)
+        setlist = self.build_setlist_response(artist_name)
+        if setlist == None:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(setlist, status=status.HTTP_200_OK)
 
     def build_setlist_response(self, artist_name):
         most_recent = self.get_most_recent_set(artist_name, 5)
         meta_data = self.parse_meta_data(most_recent)
         songs = self.parse_song_names_from_setlist(most_recent)
+        if None in (most_recent, meta_data, songs):
+            return None
         return {'setlist':{'metadata':meta_data, 'songs':songs}}
 
     def get_most_recent_set(self, artist_name, max_page_search):
@@ -28,6 +33,8 @@ class SetlistView(APIView):
                     return setlist
 
     def parse_meta_data(self, setlist):
+        if setlist is None:
+            return None
         artist_info = setlist.get("artist")
         venue_info = setlist.get("venue")
         tour = setlist.get("tour")
@@ -36,7 +43,11 @@ class SetlistView(APIView):
         return {'artist': artist_info, 'venue': venue_info, 'tour': tour}
    
     def parse_song_names_from_setlist(self, setlist):
+        if setlist is None:
+            return None
         parsed_setlist = self.parse_set(setlist)
+        if not parsed_setlist:
+            return None
         setlist = self.parse_subsets_from_set(parsed_setlist)
         if None in (parsed_setlist, setlist):
             return None
