@@ -31,11 +31,15 @@ class SetlistView(APIView):
         artist_info = setlist.get("artist")
         venue_info = setlist.get("venue")
         tour = setlist.get("tour")
+        if None in (artist_info, venue_info, tour):
+            return None
         return {'artist': artist_info, 'venue': venue_info, 'tour': tour}
-
+   
     def parse_song_names_from_setlist(self, setlist):
         parsed_setlist = self.parse_set(setlist)
         setlist = self.parse_subsets_from_set(parsed_setlist)
+        if None in (parsed_setlist, setlist):
+            return None
         return self.flatten_subsets(setlist)
 
     def get_setlists(self, artist_name, page_number):
@@ -57,15 +61,30 @@ class SetlistView(APIView):
     def is_empty_set(self, setlist):
         if not self.parse_set(setlist):
             return True
+        else:
+            return False
 
     def parse_set(self, setlist):
-        return setlist.get("sets").get("set")
+        try:
+            return setlist.get("sets").get("set")
+        except AttributeError:
+            return None
 
     def parse_subsets_from_set(self, set):
-        return [sub_setlist.get("song") for sub_setlist in set]
+        try:
+            return [sub_setlist.get("song") for sub_setlist in set]
+        except AttributeError:
+            return None
+        except TypeError:
+            return None
 
     def flatten_subsets(self, subsets):
-        return [song.get("name") for sublist in subsets for song in sublist]
+        try:
+            return [song.get("name") for sublist in subsets for song in sublist]
+        except AttributeError:
+            return None
+        except TypeError:
+            return None
 
     def setlist_JSON_response(self, url, params = None):
         r = requests.get(url, params = params, headers = self.HEADERS)
