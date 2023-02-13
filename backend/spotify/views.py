@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse
+from .utils import request_new_tokens, is_authenticated
 
 REDIRECT_URI = ''
 CLIENT_ID = ''
@@ -21,23 +22,17 @@ class AuthURL(APIView):
         }).prepare().url
         return Response({'url':url}, status=status.HTTP_200_OK)
 
+class IsAuthenticated(APIView):
+    def get(self, request):
+        is_authed = is_authenticated(self.request.session.session_key)
+        return Response({'status':is_authed}, status=status.HTTP_200_OK)
+
 def spotify_callback(request):
     code = request.GET.get('code')
     error = request.GET.get('error')
-
-    response = post('https://accounts.spotify.com/api/token', data={
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': REDIRECT_URI,
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET
-    }).json()
-
-    access_token = response.get('access_token')
-    token_type = response.get('token_type')
-    refresh_token = response.get('refresh_token')
-    expires_in = response.get('expires_in')
-    error = response.get('error')
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
+    request_new_tokens(request.session.session_key, code)
     return redirect('auth-confirmation')
 
 def auth_confirmation(request):
