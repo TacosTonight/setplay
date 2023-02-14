@@ -1,42 +1,34 @@
 import requests
-from requests import Request, post
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse
-from .utils import request_new_tokens, is_authenticated
+from .spotify_authentication import SpotifyAuthentication
 
-REDIRECT_URI = ''
-CLIENT_ID = ''
-CLIENT_SECRET = ''
-SCOPES = ''
+spotify_auth = SpotifyAuthentication()
 
 class AuthURL(APIView):
     def get(self, request):
-        url = Request('GET', 'https://accounts.spotify.com/authorize', params={
-            'client_id': CLIENT_ID,
-            'response_type':'code',
-            'redirect_uri': REDIRECT_URI,
-            'scopes': SCOPES
-        }).prepare().url
-        return Response({'url':url}, status=status.HTTP_200_OK)
+        return Response({'url':spotify_auth.create_auth_url()}, status=status.HTTP_200_OK)
 
 class IsAuthenticated(APIView):
     def get(self, request):
-        is_authed = is_authenticated(self.request.session.session_key)
+        is_authed = spotify_auth.is_authenticated(self.request.session.session_key)
         return Response({'status':is_authed}, status=status.HTTP_200_OK)
 
 def spotify_callback(request):
     code = request.GET.get('code')
     error = request.GET.get('error')
+    if error:
+        return HttpResponse("Authentication denied")
     if not request.session.exists(request.session.session_key):
         request.session.create()
-    request_new_tokens(request.session.session_key, code)
+    spotify_auth.request_new_tokens(request.session.session_key, code)
     return redirect('auth-confirmation')
 
 def auth_confirmation(request):
-    return HttpResponse("You have been authenticated!")
+    return HttpResponse("temporary redirect page")
 
 def authenticate(request):
     if request.method == 'POST':
