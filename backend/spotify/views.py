@@ -6,7 +6,14 @@ from rest_framework import status
 from django.http import HttpResponse
 from .spotify_authentication import SpotifyAuthentication
 
-spotify_auth = SpotifyAuthentication()
+REDIRECT_URI = ''
+CLIENT_ID = ''
+CLIENT_SECRET = ''
+SCOPES = ''
+TOKEN_URL = ''
+AUTHORIZE_URL = ''
+
+spotify_auth = SpotifyAuthentication(REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SCOPES, TOKEN_URL, AUTHORIZE_URL)
 
 class AuthURL(APIView):
     def get(self, request):
