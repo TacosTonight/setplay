@@ -29,7 +29,8 @@ class SpotifyTokenTest(TestCase):
         SCENARIO
             - Check if user exists and has expired token
         Expected
-            - 
+            - An existing user that has an expired token will return True and refresh their access token
+            - Db for user1 will now have access_token2 for acess token
         """
         refresh_token_response = {
         'access_token':'access_token2',
@@ -49,6 +50,10 @@ class SpotifyTokenTest(TestCase):
 
     def test_request_new_tokens_new_user(self):
         """
+        SCENARIO 
+            - Request token for new user
+        Expected
+            - User2 which does not exist in the current db will create a new user row with access_token
         """
         user = "user2"
         refresh_token_response = {
@@ -64,6 +69,10 @@ class SpotifyTokenTest(TestCase):
 
     def test_parse_spotify_auth_authorization_code(self):
         """
+        SCENARIO
+            - Parse authorization code response
+        Expected
+            - Dict with 4 keys that are access_token, token_type, expires_in, and refresh_token
         """
         response = {
             'access_token':'access_token',
@@ -81,6 +90,10 @@ class SpotifyTokenTest(TestCase):
 
     def test_parse_spotify_auth_refresh_token(self):
         """
+        SCENARIO
+            - Parse refresh token response
+        Expected
+            - Dict with 3 keys that are access_token, token_type, expires_in
         """
         response = {
             'access_token':'access_token',
