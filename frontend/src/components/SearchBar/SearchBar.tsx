@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useFetchArtists } from "../hooks/useFetchArtist";
-import { useDebounce } from "../hooks/useDebounce";
-import { Artist, isArtist } from "../types";
+import { useFetchArtists } from "../../hooks/useFetchArtist";
+import { useDebounce } from "../../hooks/useDebounce";
+import { Artist, isArtist } from "../../types";
 import ArtistCard from "../ArtistCard";
 
 const SearchBar = () => {
