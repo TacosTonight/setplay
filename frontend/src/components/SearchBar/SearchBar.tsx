@@ -7,25 +7,41 @@ import { Artist, isArtist } from "../../types";
 import ArtistCard from "../ArtistCard";
 
 const SearchBar = () => {
+  const [value, setValue] = React.useState<Artist | null>(null);
   const [artistInput, setArtistInput] = React.useState("");
   const [options, setOptions] = React.useState<readonly Artist[]>([]);
   const debouncedArtistInput = useDebounce(artistInput, 1000);
-  const handleInputChange = (e: React.SyntheticEvent, newValue: string) => {
+  const handleInputChange = (_e: React.SyntheticEvent, newValue: string) => {
     setArtistInput(newValue);
+  };
+
+  const handleAutocompleteChange = (
+    _e: React.SyntheticEvent,
+    newValue: Artist | string | null
+  ) => {
+    if (isArtist(newValue)) {
+      setValue(newValue);
+    }
   };
 
   const { data, isLoading, isError, error } =
     useFetchArtists(debouncedArtistInput);
 
   useEffect(() => {
-    data !== undefined ? setOptions(data.artist) : setOptions([]);
-  }, [data]);
+    if (isError) {
+      console.error("Error fetching artists:", error);
+    } else {
+      setOptions(data?.artist || []);
+    }
+  }, [data, isError, error]);
 
   return (
     <>
       <Autocomplete
         filterOptions={(x) => x}
         freeSolo
+        value={value}
+        onChange={handleAutocompleteChange}
         onInputChange={handleInputChange}
         getOptionLabel={(option) => (isArtist(option) ? option.name : option)}
         options={options}
