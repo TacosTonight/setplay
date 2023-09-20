@@ -1,10 +1,6 @@
 import React from "react";
 import { Box, Typography, Avatar } from "@mui/material";
-
-type ArtistCardProps = {
-  artistName: string;
-  imageUrl: string;
-};
+import { ArtistCardProps } from "../../types";
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artistName, imageUrl }) => {
   return (

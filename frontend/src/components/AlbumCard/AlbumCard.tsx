@@ -1,14 +1,10 @@
 import React from "react";
 import { Card, CardMedia, Typography } from "@mui/material";
+import { AlbumCardProps } from "../../types";
 
-type AlbumCardProps = {
-  position: number;
-  albumUrl: string;
-};
-
-const AlbumCard: React.FC<AlbumCardProps> = ({ position, albumUrl }) => {
+const AlbumCard: React.FC<AlbumCardProps> = ({ position, albumUrl, size }) => {
   return (
-    <Card sx={{ width: 80, height: 80 }}>
+    <Card sx={{ width: size, height: size }}>
       <CardMedia
         sx={{
           position: "relative",
