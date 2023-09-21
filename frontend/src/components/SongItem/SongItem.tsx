@@ -4,9 +4,9 @@ import { SongItemProps } from "../../types";
 import { Grid, Typography } from "@mui/material";
 
 const SongItem: React.FC<SongItemProps> = ({ title, position, albumUrl }) => {
-  const size = 200;
+  const size = 80;
   return (
-    <Grid container spacing={2} alignItems="center" sx={{ height: size }}>
+    <Grid container alignItems="center" sx={{ height: size }}>
       <Grid item>
         <AlbumCard
           position={position}
@@ -15,7 +15,7 @@ const SongItem: React.FC<SongItemProps> = ({ title, position, albumUrl }) => {
         ></AlbumCard>
       </Grid>
       <Grid item>
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="h2">{title}</Typography>
       </Grid>
     </Grid>
   );
