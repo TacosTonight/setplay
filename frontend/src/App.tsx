@@ -1,4 +1,3 @@
-import CreateNew from "./components/CreateNew";
 import SearchBar from "./components/SearchBar";
 
 function App() {
@@ -6,8 +5,7 @@ function App() {
   document.body.style.margin = "0";
   return (
     <>
-      {/* <SearchBar></SearchBar> */}
-      <CreateNew artist="Artist"></CreateNew>
+      <SearchBar></SearchBar>
     </>
   );
 }
