@@ -21,3 +21,13 @@ export const fetchArtists = async (
     throw error;
   }
 };
+
+// place holder for artist Image. Will update frontend requests after modifying backend
+export const simulateApiRequest = async (_artist:string) => {
+  return new Promise<string>((resolve) => {
+    setTimeout(() => {
+      resolve('/demoimage.jpeg');
+    }, 5000); // Simulate a 1 second delay, similar to a network request
+  });
+};
+
