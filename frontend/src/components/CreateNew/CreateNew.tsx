@@ -1,12 +1,14 @@
 import React from "react";
-import { Box, Grid, Paper, TextField } from "@mui/material";
+import { Box, Grid, TextField } from "@mui/material";
+import PlaylistArt from "../PlaylistArt";
 
 type CreateNewProps = {
   artist: string;
 };
 
 const CreateNew: React.FC<CreateNewProps> = ({ artist }) => {
-  const playlistTitle = `Setplay: ${artist} `;
+  const playlistTitle = `Setplay: ${artist}`;
+
   return (
     <Box padding={3}>
       <Grid
@@ -21,11 +23,10 @@ const CreateNew: React.FC<CreateNewProps> = ({ artist }) => {
             size="small"
             defaultValue={playlistTitle}
             label="Playlist Title"
-          ></TextField>
+          />
         </Grid>
-        {/* Replace with Playlist Art */}
         <Grid item>
-          <Paper sx={{ height: 300, width: 300 }}></Paper>
+          <PlaylistArt artist={artist} />
         </Grid>
       </Grid>
     </Box>
