@@ -1,13 +1,11 @@
-import React from "react";
 import { Box, Grid, TextField } from "@mui/material";
 import PlaylistArt from "../PlaylistArt";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
-type CreateNewProps = {
-  artist: string;
-};
-
-const CreateNew: React.FC<CreateNewProps> = ({ artist }) => {
-  const playlistTitle = `Setplay: ${artist}`;
+const CreateNew = () => {
+  const artistName = useSelector((state: RootState) => state.artist.name);
+  const playlistTitle = `Setplay: ${artistName}`;
 
   return (
     <Box padding={3}>
@@ -26,7 +24,7 @@ const CreateNew: React.FC<CreateNewProps> = ({ artist }) => {
           />
         </Grid>
         <Grid item>
-          <PlaylistArt artist={artist} />
+          <PlaylistArt artist={artistName} />
         </Grid>
       </Grid>
     </Box>

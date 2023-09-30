@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ArtistState {
-  artistName: string;
+  name: string;
 }
 
 const initialState: ArtistState = {
-  artistName: "",
+  name: "",
 };
 
 const artistSlice = createSlice({
@@ -13,7 +13,7 @@ const artistSlice = createSlice({
   initialState,
   reducers: {
     setArtistName: (state, action: PayloadAction<string>) => {
-      state.artistName = action.payload;
+      state.name = action.payload;
     },
   },
 });
