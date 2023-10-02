@@ -1,12 +1,19 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 import SpotifyLogo from "../../assets/Spotify_Logo_CMYK_Black.png";
 
-type AuthButtonProps = {
-  isAuth: boolean;
-};
+const AuthButton = () => {
+  const isAuthenticatedToSpotify = useSelector(
+    (state: RootState) => state.isAuthToSpotify.isAuth
+  );
+  const [isAuth, setIsAuth] = useState(false);
 
-const AuthButton: React.FC<AuthButtonProps> = ({ isAuth }) => {
+  useEffect(() => {
+    setIsAuth(isAuthenticatedToSpotify);
+  }, [isAuthenticatedToSpotify]);
+
   return (
     <Stack direction="column" alignItems="center">
       <Button variant="contained">{isAuth ? "Save" : "Login"}</Button>
