@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ArtistState {
   name: string;
+  imgUrl: string;
 }
 
 const initialState: ArtistState = {
   name: "",
+  imgUrl: "",
 };
 
 const artistSlice = createSlice({
@@ -14,6 +16,9 @@ const artistSlice = createSlice({
   reducers: {
     setArtistName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
+    },
+    setArtistImg: (state, action: PayloadAction<string>) => {
+      state.imgUrl = action.payload;
     },
   },
 });
