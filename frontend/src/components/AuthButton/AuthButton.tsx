@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
 import SpotifyLogo from "../../assets/Spotify_Logo_CMYK_Black.png";
 
 const AuthButton = () => {
-  const isAuthenticatedToSpotify = useSelector(
+  const isAuth = useSelector(
     (state: RootState) => state.isAuthToSpotify.isAuth
   );
-  const [isAuth, setIsAuth] = useState(false);
-
-  useEffect(() => {
-    setIsAuth(isAuthenticatedToSpotify);
-  }, [isAuthenticatedToSpotify]);
 
   return (
     <Stack direction="column" alignItems="center">

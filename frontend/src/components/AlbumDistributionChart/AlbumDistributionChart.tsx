@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { PieChart } from "@mui/x-charts";
 import { styled } from "@mui/system";
 import { useDrawingArea } from "@mui/x-charts/hooks";
@@ -57,12 +56,7 @@ const findUniqueGroups = (inputArray: Setlist): AlbumOccurrences[] => {
 };
 
 const AlbumDistributionChart = () => {
-  const setlistStore = useSelector((state: RootState) => state.setlist);
-  const [setlist, setSetlist] = useState<Setlist>({ songs: [] });
-  useEffect(() => {
-    setSetlist(setlist);
-  }, [setlistStore]);
-
+  const setlist = useSelector((state: RootState) => state.setlist);
   const uniqueGroups: AlbumOccurrences[] = findUniqueGroups(setlist);
 
   return (
