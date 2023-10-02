@@ -28,7 +28,7 @@ const CreateNew = () => {
           />
         </Grid>
         <Grid item>
-          <PlaylistArt artist={artistName} />
+          <PlaylistArt />
         </Grid>
       </Grid>
     </Box>
