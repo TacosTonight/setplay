@@ -28,3 +28,20 @@ export type Song = {
 export type Setlist = {
   songs: Song[];
 }
+
+export type Artist = {
+  name: string;
+  imgUrl: string;
+}
+
+export type ArtistMatches = {
+  artists: Artist[];
+}
+
+export const isArtist = (obj: any): obj is Artist => {
+  return (
+    obj &&
+    typeof obj.name === "string" &&
+    typeof obj.imgUrl === "string"
+  );
+};

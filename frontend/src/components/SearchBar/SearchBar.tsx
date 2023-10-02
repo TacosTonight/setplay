@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { setArtistName } from "../../redux/artistNameSlice";
+import { setArtistName, setArtistImg } from "../../redux/artistNameSlice";
 import { useFetchArtists } from "../../hooks/useFetchArtist";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Artist, isArtist } from "../../types";
@@ -26,6 +26,7 @@ const SearchBar = () => {
     if (isArtist(newValue)) {
       setValue(newValue);
       dispatch(setArtistName(newValue.name));
+      dispatch(setArtistImg(newValue.imgUrl));
     }
   };
 
@@ -36,7 +37,7 @@ const SearchBar = () => {
     if (isError) {
       console.error("Error fetching artists:", error);
     } else {
-      setOptions(data?.artist || []);
+      setOptions(data?.artists || []);
     }
   }, [data, isError, error]);
 
@@ -53,10 +54,7 @@ const SearchBar = () => {
         loading={isLoading}
         renderOption={(props, option) => (
           <li {...props}>
-            <ArtistCard
-              artistName={option.name}
-              imageUrl={option.image[0]["#text"]}
-            />
+            <ArtistCard artistName={option.name} imageUrl={option.imgUrl} />
           </li>
         )}
         renderInput={(params) => (
