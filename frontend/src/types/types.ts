@@ -16,3 +16,15 @@ export type ArtistCardProps = {
   artistName: string;
   imageUrl: string;
 };
+
+export type Song = {
+  title: string;
+  albumName: string;
+  albumArt: string;
+  duration: number;
+  uri: string;
+};
+
+export type Setlist = {
+  songs: Song[];
+}

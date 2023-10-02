@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import artistReducer from "./artistNameSlice";
+import setlistReducer from "./setlistSlice";
 
 const rootReducer = combineReducers({
   artist: artistReducer,
+  setlist: setlistReducer,
 });
 
 export const store = configureStore({
