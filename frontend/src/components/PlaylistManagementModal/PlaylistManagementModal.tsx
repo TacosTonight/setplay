@@ -47,7 +47,7 @@ const PlaylistManagementModal: React.FC = () => {
           <Tab label="Add to Existing Playlist" />
         </Tabs>
         <TabPanel value={tab} index={0}>
-          <CreateNew artist="Counterparts" />
+          <CreateNew />
         </TabPanel>
         <TabPanel value={tab} index={2}>
           <Typography>Existing Playlists Here</Typography>

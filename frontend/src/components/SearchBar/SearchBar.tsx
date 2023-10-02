@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+
+import { setArtistName } from "../../redux/artistNameSlice";
 import { useFetchArtists } from "../../hooks/useFetchArtist";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Artist, isArtist } from "../../types";
@@ -14,6 +17,7 @@ const SearchBar = () => {
   const handleInputChange = (_e: React.SyntheticEvent, newValue: string) => {
     setArtistInput(newValue);
   };
+  const dispatch = useDispatch();
 
   const handleAutocompleteChange = (
     _e: React.SyntheticEvent,
@@ -21,6 +25,7 @@ const SearchBar = () => {
   ) => {
     if (isArtist(newValue)) {
       setValue(newValue);
+      dispatch(setArtistName(newValue.name));
     }
   };
 
