@@ -1,23 +1,14 @@
-import React from "react";
 import { PieChart } from "@mui/x-charts";
 import { styled } from "@mui/system";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { cheerfulFiestaPalette } from "@mui/x-charts/colorPalettes";
+import { Setlist } from "../../types";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
 type AlbumOccurrences = {
   value: number;
   label: string;
-};
-
-type Song = {
-  title: string;
-  albumUrl: string;
-  duration: number;
-  albumName: string;
-};
-
-type AlbumDistributionProps = {
-  setList: Song[];
 };
 
 const StyledText = styled("text")(({ theme }) => ({
@@ -44,10 +35,10 @@ const PieCenterLabel: React.FC<PieCenterLabelProps> = ({ children }) => {
   );
 };
 
-const findUniqueGroups = (inputArray: Song[]): AlbumOccurrences[] => {
+const findUniqueGroups = (inputArray: Setlist): AlbumOccurrences[] => {
   const groupMap: Map<string, number> = new Map();
 
-  inputArray.forEach((item) => {
+  inputArray.songs.forEach((item) => {
     if (groupMap.has(item.albumName)) {
       groupMap.set(item.albumName, groupMap.get(item.albumName)! + 1);
     } else {
@@ -64,13 +55,10 @@ const findUniqueGroups = (inputArray: Song[]): AlbumOccurrences[] => {
   return uniqueGroups;
 };
 
-//currently takes in an array of songs to keep the grouping function
-//in here for now but in the future will move the function out of this component
-//and make it take albumOccurences instead
-const AlbumDistributionChart: React.FC<AlbumDistributionProps> = ({
-  setList,
-}) => {
-  const uniqueGroups: AlbumOccurrences[] = findUniqueGroups(setList);
+const AlbumDistributionChart = () => {
+  const setlist = useSelector((state: RootState) => state.setlist);
+  const uniqueGroups: AlbumOccurrences[] = findUniqueGroups(setlist);
+
   return (
     <PieChart
       colors={cheerfulFiestaPalette}

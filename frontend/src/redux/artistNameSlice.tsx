@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Artist } from "../types";
 
-interface ArtistState {
-  name: string;
-  imgUrl: string;
-}
-
-const initialState: ArtistState = {
+const initialState: Artist = {
   name: "",
   imgUrl: "",
 };
@@ -23,5 +19,5 @@ const artistSlice = createSlice({
   },
 });
 
-export const { setArtistName } = artistSlice.actions;
+export const { setArtistName, setArtistImg } = artistSlice.actions;
 export default artistSlice.reducer;

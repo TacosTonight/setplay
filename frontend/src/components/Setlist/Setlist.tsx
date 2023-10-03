@@ -1,26 +1,21 @@
-import React from "react";
-import SongItem from "../SongItem";
 import { List, ListItem } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux";
+import SongItem from "../SongItem";
 
-type ItemListProps<T> = {
-  items: T[];
-};
+const Setlist = () => {
+  const songs = useSelector((state: RootState) => state.setlist.songs);
 
-type Song = {
-  title: string;
-  albumUrl: string;
-};
-
-const Setlist: React.FC<ItemListProps<Song>> = ({ items }) => {
-  const renderedSongs = items.map((item, index) => (
+  const renderedSongs = songs.map((song, index) => (
     <ListItem key={index + 1}>
       <SongItem
-        title={item.title}
-        albumUrl={item.albumUrl}
+        title={song.title}
+        albumUrl={song.albumArt}
         position={index + 1}
       />
     </ListItem>
   ));
+
   return <List>{renderedSongs}</List>;
 };
 

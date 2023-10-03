@@ -1,23 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useFetchArtistImage } from "../../hooks/useFetchArtistImage";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
-type PlaylistArtProps = {
-  artist: string;
-};
-
-const PlaylistArt: React.FC<PlaylistArtProps> = ({ artist }) => {
+const PlaylistArt = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [base64Image, setBase64Image] = useState("");
-  const { data } = useFetchArtistImage(artist);
+  const artistImg = useSelector((state: RootState) => state.artist.imgUrl);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
 
-    if (data && canvas && ctx) {
+    if (artistImg && canvas && ctx) {
       const img = new Image();
-      img.src = data;
+      img.src = artistImg;
       img.onload = function () {
         canvas.width = img.width;
         canvas.height = img.height;
@@ -36,7 +33,7 @@ const PlaylistArt: React.FC<PlaylistArtProps> = ({ artist }) => {
         setBase64Image(base64URL);
       };
     }
-  }, [data, artist]);
+  }, [artistImg]);
 
   return (
     <div>
