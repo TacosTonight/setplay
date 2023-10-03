@@ -28,18 +28,22 @@ const style = {
   p: 4,
 };
 
-const PlaylistManagementModal: React.FC = () => {
+type PlaylistManagementModalProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
+  open,
+  onClose,
+}) => {
   const [tab, setTab] = useState(0);
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => setOpen(false);
-
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <Tabs value={tab} onChange={handleChange} centered>
           <Tab label="Create New Playlist" />
