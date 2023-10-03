@@ -4,7 +4,9 @@ import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { setArtistName, setArtistImg } from "../../redux/artistNameSlice";
+import { updateSetlist } from "../../redux/setlistSlice";
 import { useFetchArtists } from "../../hooks/useFetchArtist";
+import { useFetchSetlist } from "../../hooks/useFetchSetlist";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Artist, isArtist } from "../../types";
 import ArtistCard from "../ArtistCard";
@@ -30,16 +32,35 @@ const SearchBar = () => {
     }
   };
 
-  const { data, isLoading, isError, error } =
-    useFetchArtists(debouncedArtistInput);
+  const {
+    data: artistsData,
+    isLoading: artistsIsLoading,
+    isError: artistsIsError,
+    error: artistsError,
+  } = useFetchArtists(debouncedArtistInput);
 
   useEffect(() => {
-    if (isError) {
-      console.error("Error fetching artists:", error);
+    if (artistsIsError) {
+      console.error("Error fetching artists:", artistsError);
     } else {
-      setOptions(data?.artists || []);
+      setOptions(artistsData?.artists || []);
     }
-  }, [data, isError, error]);
+  }, [artistsData, artistsIsError, artistsError, dispatch]);
+
+  const {
+    data: setlistData,
+    isLoading: setlistIsLoading,
+    isError: setlistIsError,
+    error: setlistError,
+  } = useFetchSetlist(value?.name || "");
+
+  useEffect(() => {
+    if (setlistError) {
+      console.error("Error fetching setlist:", setlistError);
+    } else if (setlistData) {
+      dispatch(updateSetlist(setlistData));
+    }
+  }, [setlistData, setlistIsError, setlistError, dispatch]);
 
   return (
     <>
@@ -51,7 +72,7 @@ const SearchBar = () => {
         onInputChange={handleInputChange}
         getOptionLabel={(option) => (isArtist(option) ? option.name : option)}
         options={options}
-        loading={isLoading}
+        loading={artistsIsLoading}
         renderOption={(props, option) => (
           <li {...props}>
             <ArtistCard artistName={option.name} imageUrl={option.imgUrl} />
