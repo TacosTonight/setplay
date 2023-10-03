@@ -1,15 +1,22 @@
-import React from "react";
 import { Grid, Typography } from "@mui/material";
+import { Setlist } from "../../types";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
-type DurationDisplayProps = {
-  numberOfSongs: number;
-  milliseconds: number;
+const calculateTotalDuration = (setlist: Setlist) => {
+  let totalDuration = 0;
+
+  setlist.songs.forEach((song) => {
+    totalDuration += song.duration;
+  });
+
+  return totalDuration;
 };
 
-const DurationDisplay: React.FC<DurationDisplayProps> = ({
-  numberOfSongs,
-  milliseconds,
-}) => {
+const DurationDisplay = () => {
+  const setlist = useSelector((state: RootState) => state.setlist);
+  const milliseconds = calculateTotalDuration(setlist);
+  const numberOfSongs = setlist.songs.length;
   const totalMinutes = Math.floor(milliseconds / (1000 * 60));
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
