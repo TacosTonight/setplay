@@ -16,7 +16,7 @@ const Setlist = () => {
     </ListItem>
   ));
 
-  return <List sx={{ height: "90vh" }}>{renderedSongs}</List>;
+  return <List sx={{ height: "86vh" }}>{renderedSongs}</List>;
 };
 
 export default Setlist;
