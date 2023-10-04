@@ -6,7 +6,7 @@ import { Grid, Typography } from "@mui/material";
 const SongItem: React.FC<SongItemProps> = ({ title, position, albumUrl }) => {
   const size = 80;
   return (
-    <Grid container alignItems="center" sx={{ height: size }}>
+    <Grid container alignItems="center" columnSpacing={1} sx={{ height: size }}>
       <Grid item>
         <AlbumCard
           position={position}
