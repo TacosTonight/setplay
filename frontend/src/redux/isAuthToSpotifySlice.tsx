@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: { isAuth: boolean } = {
-  isAuth: true,
+  isAuth: false,
 };
 
 const isAuthToSpotifySlice = createSlice({
