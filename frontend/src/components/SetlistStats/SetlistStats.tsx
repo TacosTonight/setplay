@@ -1,10 +1,13 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import AlbumDistributionChart from "../AlbumDistributionChart";
 import DurationDisplay from "../DurationDisplay";
 import AuthButton from "../AuthButton";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
 const SetlistStats = () => {
+  const setlist = useSelector((state: RootState) => state.setlist);
   return (
     <Grid
       container
@@ -13,13 +16,31 @@ const SetlistStats = () => {
       justifyContent="flex-start"
     >
       <Grid item>
-        <DurationDisplay />
+        {setlist.songs.length === 0 ? (
+          <Skeleton>
+            <DurationDisplay />
+          </Skeleton>
+        ) : (
+          <DurationDisplay />
+        )}
       </Grid>
-      <Grid item sx={{ marginLeft: "5.9375em" }}>
-        <AlbumDistributionChart />
+      <Grid item>
+        {setlist.songs.length === 0 ? (
+          <Skeleton variant="circular">
+            <AlbumDistributionChart />
+          </Skeleton>
+        ) : (
+          <AlbumDistributionChart />
+        )}
       </Grid>
-      <Grid item sx={{ marginLeft: "0.28125em" }}>
-        <AuthButton />
+      <Grid item>
+        {setlist.songs.length === 0 ? (
+          <Skeleton>
+            <AuthButton />
+          </Skeleton>
+        ) : (
+          <AuthButton />
+        )}
       </Grid>
     </Grid>
   );

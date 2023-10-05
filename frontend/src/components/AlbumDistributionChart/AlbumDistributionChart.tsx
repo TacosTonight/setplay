@@ -1,5 +1,5 @@
 import { PieChart } from "@mui/x-charts";
-import { styled } from "@mui/system";
+import { Box, styled } from "@mui/system";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { cheerfulFiestaPalette } from "@mui/x-charts/colorPalettes";
 import { Setlist } from "../../types";
@@ -60,23 +60,24 @@ const AlbumDistributionChart = () => {
   const uniqueGroups: AlbumOccurrences[] = findUniqueGroups(setlist);
 
   return (
-    <PieChart
-      colors={cheerfulFiestaPalette}
-      series={[
-        {
-          data: uniqueGroups,
-          paddingAngle: 5,
-          innerRadius: 60,
-          outerRadius: 80,
-          highlightScope: { faded: "global", highlighted: "item" },
-        },
-      ]}
-      width={400}
-      height={200}
-      legend={{ hidden: true }}
-    >
-      <PieCenterLabel>{`Album \n Distribution`}</PieCenterLabel>
-    </PieChart>
+    <Box width={170} height={170}>
+      <PieChart
+        colors={cheerfulFiestaPalette}
+        series={[
+          {
+            data: uniqueGroups,
+            paddingAngle: 5,
+            innerRadius: 60,
+            outerRadius: 80,
+            highlightScope: { faded: "global", highlighted: "item" },
+          },
+        ]}
+        legend={{ hidden: true }}
+        margin={{ left: 84 }}
+      >
+        <PieCenterLabel>{`Album \n Distribution`}</PieCenterLabel>
+      </PieChart>
+    </Box>
   );
 };
 
