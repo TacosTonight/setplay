@@ -1,10 +1,13 @@
-import { List, ListItem } from "@mui/material";
+import { List, ListItem, Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import SongItem from "../SongItem";
 
 const Setlist = () => {
   const songs = useSelector((state: RootState) => state.setlist.songs);
+  const setlistIsLoading = useSelector(
+    (state: RootState) => state.setlist.isLoading
+  );
 
   const renderedSongs = songs.map((song, index) => (
     <ListItem key={index + 1}>
@@ -16,7 +19,15 @@ const Setlist = () => {
     </ListItem>
   ));
 
-  return <List sx={{ height: "86vh" }}>{renderedSongs}</List>;
+  return (
+    <>
+      {setlistIsLoading ? (
+        <Skeleton variant="rounded" width="100%" height="100%"></Skeleton>
+      ) : (
+        <List sx={{ height: "100%", overflowY: "auto" }}>{renderedSongs}</List>
+      )}
+    </>
+  );
 };
 
 export default Setlist;

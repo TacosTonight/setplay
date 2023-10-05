@@ -7,14 +7,13 @@ const MainContentArea = () => {
     <Grid
       container
       justifyContent="space-between"
-      sx={{ height: "100%" }}
+      sx={{ height: "86vh" }}
       alignItems="center"
-      columnSpacing={-10}
     >
-      <Grid item sx={{ flex: 1, overflowY: "auto" }}>
+      <Grid item sx={{ flex: 1.5, height: "100%" }}>
         <Setlist />
       </Grid>
-      <Grid item>
+      <Grid item sx={{ flex: 1 }}>
         <SetlistStats />
       </Grid>
     </Grid>
