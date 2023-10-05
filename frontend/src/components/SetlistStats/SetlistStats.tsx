@@ -35,7 +35,7 @@ const SetlistStats = () => {
       </Grid>
       <Grid item>
         {setlist.songs.length === 0 ? (
-          <Skeleton>
+          <Skeleton height={100}>
             <AuthButton />
           </Skeleton>
         ) : (
