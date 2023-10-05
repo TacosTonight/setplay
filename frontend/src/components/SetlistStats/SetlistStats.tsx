@@ -8,6 +8,14 @@ import { useSelector } from "react-redux";
 
 const SetlistStats = () => {
   const setlist = useSelector((state: RootState) => state.setlist);
+  const renderContent = (component: React.ReactNode, skeletonProps?: any) => {
+    return setlist.songs.length === 0 ? (
+      <Skeleton {...skeletonProps}>{component}</Skeleton>
+    ) : (
+      component
+    );
+  };
+
   return (
     <Grid
       container
@@ -15,33 +23,11 @@ const SetlistStats = () => {
       alignItems="center"
       justifyContent="flex-start"
     >
+      <Grid item>{renderContent(<DurationDisplay />)}</Grid>
       <Grid item>
-        {setlist.songs.length === 0 ? (
-          <Skeleton>
-            <DurationDisplay />
-          </Skeleton>
-        ) : (
-          <DurationDisplay />
-        )}
+        {renderContent(<AlbumDistributionChart />, { variant: "circular" })}
       </Grid>
-      <Grid item>
-        {setlist.songs.length === 0 ? (
-          <Skeleton variant="circular">
-            <AlbumDistributionChart />
-          </Skeleton>
-        ) : (
-          <AlbumDistributionChart />
-        )}
-      </Grid>
-      <Grid item>
-        {setlist.songs.length === 0 ? (
-          <Skeleton height={100}>
-            <AuthButton />
-          </Skeleton>
-        ) : (
-          <AuthButton />
-        )}
-      </Grid>
+      <Grid item>{renderContent(<AuthButton />, { height: 100 })}</Grid>
     </Grid>
   );
 };
