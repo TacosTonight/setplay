@@ -5,6 +5,9 @@ import SongItem from "../SongItem";
 
 const Setlist = () => {
   const songs = useSelector((state: RootState) => state.setlist.songs);
+  const setlistIsLoading = useSelector(
+    (state: RootState) => state.setlist.isLoading
+  );
 
   const renderedSongs = songs.map((song, index) => (
     <ListItem key={index + 1}>
@@ -18,7 +21,7 @@ const Setlist = () => {
 
   return (
     <>
-      {songs.length === 0 ? (
+      {setlistIsLoading ? (
         <Skeleton variant="rounded" width="100%" height="100%"></Skeleton>
       ) : (
         <List sx={{ height: "100%", overflowY: "auto" }}>{renderedSongs}</List>

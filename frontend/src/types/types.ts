@@ -27,7 +27,6 @@ export type Song = {
 
 export type Setlist = {
   songs: Song[];
-  isLoading: boolean;
 }
 
 export type Artist = {

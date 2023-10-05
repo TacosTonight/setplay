@@ -7,9 +7,11 @@ import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
 
 const SetlistStats = () => {
-  const setlist = useSelector((state: RootState) => state.setlist);
+  const setlistIsLoading = useSelector(
+    (state: RootState) => state.setlist.isLoading
+  );
   const renderContent = (component: React.ReactNode, skeletonProps?: any) => {
-    return setlist.songs.length === 0 ? (
+    return setlistIsLoading ? (
       <Skeleton {...skeletonProps}>{component}</Skeleton>
     ) : (
       component

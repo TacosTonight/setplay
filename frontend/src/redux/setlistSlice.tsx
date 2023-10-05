@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Setlist } from "../types";
 
-const initialState: Setlist = {
+type SetlistWithLoading = Setlist & {
+  isLoading: boolean;
+};
+
+const initialState: SetlistWithLoading = {
   songs: [],
   isLoading: false,
 };
