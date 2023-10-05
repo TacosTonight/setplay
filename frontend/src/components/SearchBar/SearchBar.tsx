@@ -4,7 +4,10 @@ import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { setArtistName, setArtistImg } from "../../redux/artistNameSlice";
-import { updateSetlist } from "../../redux/setlistSlice";
+import {
+  updateSetlist,
+  updateSetlistIsLoading,
+} from "../../redux/setlistSlice";
 import { useFetchArtists } from "../../hooks/useFetchArtist";
 import { useFetchSetlist } from "../../hooks/useFetchSetlist";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -61,6 +64,10 @@ const SearchBar = () => {
       dispatch(updateSetlist(setlistData));
     }
   }, [setlistData, setlistIsError, setlistError, dispatch]);
+
+  useEffect(() => {
+    dispatch(updateSetlistIsLoading(setlistIsLoading));
+  }, [setlistIsLoading, dispatch]);
 
   return (
     <>

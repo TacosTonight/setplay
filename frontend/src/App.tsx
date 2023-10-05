@@ -11,14 +11,14 @@ function App() {
   document.body.style.margin = "0";
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(false);
   const [showMainContentArea, setShowMainContentArea] = useState(false);
-  const songs = useSelector((state: RootState) => state.setlist.songs);
+  const songs = useSelector((state: RootState) => state.artist.name);
 
   useEffect(() => {
     setShowWelcomeScreen(true);
   }, []);
 
   useEffect(() => {
-    if (songs.length > 0) {
+    if (songs) {
       setShowWelcomeScreen(false);
       setShowMainContentArea(true);
     }
@@ -27,14 +27,14 @@ function App() {
   return (
     <>
       <HeaderComponent />
-      {/* <FadeTransition
+      <FadeTransition
         show={showWelcomeScreen}
         transitionDuration={3000}
         exitTransitionDuration={1000}
       >
         <WelcomeScreen />
-      </FadeTransition> */}
-      <MainContentArea />
+      </FadeTransition>
+      {showMainContentArea && <MainContentArea />}
     </>
   );
 }

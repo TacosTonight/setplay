@@ -3,6 +3,7 @@ import { Setlist } from "../types";
 
 const initialState: Setlist = {
   songs: [],
+  isLoading: false,
 };
 
 const setlistSlice = createSlice({
@@ -12,8 +13,11 @@ const setlistSlice = createSlice({
     updateSetlist: (state, action: PayloadAction<Setlist>) => {
       state.songs = action.payload.songs;
     },
+    updateSetlistIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
-export const { updateSetlist } = setlistSlice.actions;
+export const { updateSetlist, updateSetlistIsLoading } = setlistSlice.actions;
 export default setlistSlice.reducer;
