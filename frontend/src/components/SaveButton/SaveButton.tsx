@@ -1,8 +1,23 @@
 import { Button, CircularProgress } from "@mui/material";
 import { useCreatePlaylist } from "../../hooks/useCreatePlaylist";
+import { useDispatch } from "react-redux";
+import {
+  updatePlaylistIsSuccess,
+  updatePlaylistIsError,
+} from "../../redux/playlistManagementSlice";
+import { useEffect } from "react";
 
 const SaveButton = () => {
   const { isError, isSuccess, isLoading, mutateAsync } = useCreatePlaylist();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updatePlaylistIsSuccess(isSuccess));
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
+    dispatch(updatePlaylistIsError(isError));
+  }, [isError, dispatch]);
 
   const handleClick = async () => {
     try {
