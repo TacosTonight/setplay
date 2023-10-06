@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Modal, Box, Tabs, Tab, Typography, Button } from "@mui/material";
+import { Modal, Box, Tabs, Tab } from "@mui/material";
 import CreateNew from "../CreateNew";
+import SaveButton from "../SaveButton";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,15 +48,15 @@ const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
       <Box sx={style}>
         <Tabs value={tab} onChange={handleChange} centered>
           <Tab label="Create New Playlist" />
-          <Tab label="or" disabled />
-          <Tab label="Add to Existing Playlist" />
+          {/* <Tab label="or" disabled />
+          <Tab label="Add to Existing Playlist" /> */}
         </Tabs>
         <TabPanel value={tab} index={0}>
           <CreateNew />
         </TabPanel>
-        <TabPanel value={tab} index={2}>
+        {/* <TabPanel value={tab} index={2}>
           <Typography>Existing Playlists Here</Typography>
-        </TabPanel>
+        </TabPanel> */}
         <Box
           sx={{
             position: "absolute",
@@ -64,7 +65,7 @@ const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
             transform: "translateX(-50%)",
           }}
         >
-          <Button variant="contained">Save</Button>
+          <SaveButton></SaveButton>
         </Box>
       </Box>
     </Modal>
