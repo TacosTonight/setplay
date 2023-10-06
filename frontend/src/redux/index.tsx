@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import artistReducer from "./artistNameSlice";
 import setlistReducer from "./setlistSlice";
 import isAuthToSpotifyReducer from "./isAuthToSpotifySlice";
+import playlistManagementReducer from "./playlistManagementSlice";
 
 const rootReducer = combineReducers({
   artist: artistReducer,
   setlist: setlistReducer,
   isAuthToSpotify: isAuthToSpotifyReducer,
+  playlistManagement: playlistManagementReducer,
 });
 
 export const store = configureStore({

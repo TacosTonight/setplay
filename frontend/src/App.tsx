@@ -5,6 +5,7 @@ import FadeTransition from "./components/FadeTransition";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux";
+import CreatePlaylistStatus from "./components/CreatePlaylistStatus";
 
 function App() {
   // Apply custom CSS to remove margin from body
@@ -35,6 +36,7 @@ function App() {
         <WelcomeScreen />
       </FadeTransition>
       {showMainContentArea && <MainContentArea />}
+      <CreatePlaylistStatus />
     </>
   );
 }
