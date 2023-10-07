@@ -1,32 +1,16 @@
 import { Button, CircularProgress } from "@mui/material";
-import { useCreatePlaylist } from "../../hooks/useCreatePlaylist";
-import { useDispatch } from "react-redux";
-import {
-  updatePlaylistIsSuccess,
-  updatePlaylistIsError,
-} from "../../redux/playlistManagementSlice";
-import { useEffect } from "react";
+import React from "react";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
-const SaveButton = () => {
-  const { isError, isSuccess, isLoading, mutate } = useCreatePlaylist();
-  const dispatch = useDispatch();
+type SaveButtonProps = {
+  createPlaylist: () => void;
+};
 
-  useEffect(() => {
-    dispatch(updatePlaylistIsSuccess(isSuccess));
-  }, [isSuccess, dispatch]);
-
-  useEffect(() => {
-    dispatch(updatePlaylistIsError(isError));
-  }, [isError, dispatch]);
-
-  const handleClick = () => {
-    try {
-      mutate();
-    } catch (error) {
-      console.error("Error creating playlist:", error);
-    }
-  };
-
+const SaveButton: React.FC<SaveButtonProps> = ({ createPlaylist }) => {
+  const isLoading = useSelector(
+    (state: RootState) => state.playlistManagement.isLoading
+  );
   const renderButton = (isLoading: boolean) => {
     return isLoading ? (
       <Button
@@ -37,7 +21,7 @@ const SaveButton = () => {
         Save
       </Button>
     ) : (
-      <Button variant="contained" onClick={() => handleClick()}>
+      <Button variant="contained" onClick={createPlaylist}>
         Save
       </Button>
     );

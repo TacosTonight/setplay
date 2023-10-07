@@ -32,11 +32,13 @@ const style = {
 type PlaylistManagementModalProps = {
   open: boolean;
   onClose: () => void;
+  createPlaylist: () => void;
 };
 
 const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
   open,
   onClose,
+  createPlaylist,
 }) => {
   const [tab, setTab] = useState(0);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -65,7 +67,7 @@ const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
             transform: "translateX(-50%)",
           }}
         >
-          <SaveButton></SaveButton>
+          <SaveButton createPlaylist={createPlaylist}></SaveButton>
         </Box>
       </Box>
     </Modal>
