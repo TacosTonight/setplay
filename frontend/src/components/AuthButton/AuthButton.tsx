@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import SpotifyLogo from "../../assets/Spotify_Logo_CMYK_Black.png";
 import PlaylistManagementModal from "../PlaylistManagementModal";
 
-const AuthButton = () => {
+type AuthButtonProps = {
+  createPlaylist: () => void;
+};
+
+const AuthButton: React.FC<AuthButtonProps> = ({ createPlaylist }) => {
   const isAuth = useSelector(
     (state: RootState) => state.isAuthToSpotify.isAuth
   );
@@ -25,7 +29,11 @@ const AuthButton = () => {
   return (
     <Stack direction="column" alignItems="center">
       {isAuth ? saveButton : loginButton}
-      <PlaylistManagementModal open={open} onClose={handleClose} />
+      <PlaylistManagementModal
+        open={open}
+        onClose={handleClose}
+        createPlaylist={createPlaylist}
+      />
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography variant="body2">Saving with</Typography>
         <img

@@ -153,3 +153,12 @@ export const simulateFetchSetlist = async (_selectedArtist:string): Promise<Setl
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return exampleSetlist;
 };
+
+export const simulateSaveRequest = async (): Promise<string> => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    return "request completed";
+  } catch (error) {
+    throw new Error("Error occurred while simulating save request");
+  }
+};

@@ -6,7 +6,11 @@ import AuthButton from "../AuthButton";
 import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
 
-const SetlistStats = () => {
+type SetlistStatsProps = {
+  createPlaylist: () => void;
+};
+
+const SetlistStats: React.FC<SetlistStatsProps> = ({ createPlaylist }) => {
   const setlistIsLoading = useSelector(
     (state: RootState) => state.setlist.isLoading
   );
@@ -29,7 +33,11 @@ const SetlistStats = () => {
       <Grid item>
         {renderContent(<AlbumDistributionChart />, { variant: "circular" })}
       </Grid>
-      <Grid item>{renderContent(<AuthButton />, { height: 100 })}</Grid>
+      <Grid item>
+        {renderContent(<AuthButton createPlaylist={createPlaylist} />, {
+          height: 100,
+        })}
+      </Grid>
     </Grid>
   );
 };
