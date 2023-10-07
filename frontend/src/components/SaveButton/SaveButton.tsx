@@ -8,7 +8,7 @@ import {
 import { useEffect } from "react";
 
 const SaveButton = () => {
-  const { isError, isSuccess, isLoading, mutateAsync } = useCreatePlaylist();
+  const { isError, isSuccess, isLoading, mutate } = useCreatePlaylist();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,9 +19,9 @@ const SaveButton = () => {
     dispatch(updatePlaylistIsError(isError));
   }, [isError, dispatch]);
 
-  const handleClick = async () => {
+  const handleClick = () => {
     try {
-      await mutateAsync();
+      mutate();
     } catch (error) {
       console.error("Error creating playlist:", error);
     }
