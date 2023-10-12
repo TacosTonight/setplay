@@ -4,7 +4,7 @@ from .models import SpotifyToken
 from .utils import calculate_token_expiration_time, get_spotify_token_response
 
 
-class SpotifyAuthentication:
+class SpotifyUserAuthentication:
     def __init__(
         self, redirect_uri, client_id, client_secret, scopes, token_url, authorize_url
     ):

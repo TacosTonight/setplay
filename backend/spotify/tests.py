@@ -1,13 +1,13 @@
 from unittest import mock
 from django.test import TestCase
 from spotify.models import SpotifyToken
-from .spotify_authentication import SpotifyAuthentication
+from .spotify_user_authentication import SpotifyUserAuthentication
 from setplay.settings import TIME_ZONE
 
 
 class SpotifyTokenTest(TestCase):
     def setUp(self):
-        self.auth_test = SpotifyAuthentication("", "", "", "", "", "")
+        self.auth_test = SpotifyUserAuthentication("", "", "", "", "", "")
         SpotifyToken.objects.create(
             user="user1",
             refresh_token="refresh_token",
@@ -39,7 +39,7 @@ class SpotifyTokenTest(TestCase):
             "expires_in": 3600,
         }
         with mock.patch(
-            "spotify.spotify_authentication.get_spotify_token_response",
+            "spotify.spotify_user_authentication.get_spotify_token_response",
             return_value=refresh_token_response,
         ):
             self.assertTrue(self.auth_test.is_authenticated("user1"))
@@ -67,7 +67,7 @@ class SpotifyTokenTest(TestCase):
             "refresh_token": "refresh_token",
         }
         with mock.patch(
-            "spotify.spotify_authentication.get_spotify_token_response",
+            "spotify.spotify_user_authentication.get_spotify_token_response",
             return_value=refresh_token_response,
         ):
             self.assertFalse(SpotifyToken.objects.filter(user="user2").exists())
@@ -88,7 +88,7 @@ class SpotifyTokenTest(TestCase):
             "refresh_token": "refresh_token",
         }
         with mock.patch(
-            "spotify.spotify_authentication.calculate_token_expiration_time",
+            "spotify.spotify_user_authentication.calculate_token_expiration_time",
             return_value=9999,
         ) as mock_calculate_expiration_time:
             parsed_response = self.auth_test.parse_spotify_auth(
@@ -114,7 +114,7 @@ class SpotifyTokenTest(TestCase):
             "refresh_token": "refresh_token",
         }
         with mock.patch(
-            "spotify.spotify_authentication.calculate_token_expiration_time",
+            "spotify.spotify_user_authentication.calculate_token_expiration_time",
             return_value=9999,
         ):
             parsed_response = self.auth_test.parse_spotify_auth(
