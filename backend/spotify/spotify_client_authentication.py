@@ -1,12 +1,12 @@
 from django.utils import timezone
-from utils import get_spotify_token_response, calculate_token_expiration_time
+from spotify.utils import get_spotify_token_response, calculate_token_expiration_time
 
 
 class SpotifyClientAuthentication:
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.access_token, self.expires_in = self.request_new_tokens()
+        self.access_token, self.expires_in = self.request_new_tokens().values()
 
     def request_new_tokens(self):
         data = {
