@@ -33,4 +33,4 @@ class SpotifyClientAuthentication:
         return self.expires_in <= timezone.now()
 
     def refresh_tokens(self):
-        self.access_token, self.expires_in = self.request_new_tokens()
+        self.access_token, self.expires_in = self.request_new_tokens().values()
