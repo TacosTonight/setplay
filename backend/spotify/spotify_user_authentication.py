@@ -1,7 +1,7 @@
 import requests
 from django.utils import timezone
 from .models import SpotifyToken
-from .utils import calculate_token_expiration_time, get_spotify_token_response
+from spotify.utils import calculate_token_expiration_time, get_spotify_token_response
 
 
 class SpotifyUserAuthentication:
@@ -20,7 +20,7 @@ class SpotifyUserAuthentication:
             "client_id": self.client_id,
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
-            "scopes": self.scopes,
+            "scope": self.scopes,
         }
         return requests.Request("GET", self.authorize_url, params=params).prepare().url
 
@@ -80,3 +80,11 @@ class SpotifyUserAuthentication:
                 "token_type": token_type,
                 "expires_in": calculate_token_expiration_time(expires_in),
             }
+
+    def get_access_token(self, session_id):
+        if self.is_authenticated(session_id):
+            user_tokens = SpotifyToken.objects.filter(user=session_id).values(
+                "access_token"
+            )
+            if user_tokens.exists():
+                return user_tokens[0]["access_token"]
