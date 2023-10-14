@@ -14,10 +14,12 @@ def get_spotify_token_response(url, params=None, data=None):
     return r.json()
 
 
-def handle_requests(url, method, headers=None, params=None, data=None):
+def handle_requests(url, method, headers=None, params=None, data=None, json=None):
     if method not in ["GET", "POST", "PUT", "DELETE"]:
         raise ValueError
-    r = requests.request(method, url, headers=headers, params=params, data=data)
-    if r.status_code != requests.codes.ok:
+    r = requests.request(
+        method, url, headers=headers, params=params, data=data, json=json
+    )
+    if r.status_code not in [requests.codes.ok, requests.codes.created]:
         return None
     return r.json()

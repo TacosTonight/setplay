@@ -19,20 +19,20 @@ class SpotifyUserService:
         method = "POST"
         url = "https://api.spotify.com/v1/users/{}/playlists".format(user_id)
         headers = {"Authorization": "Bearer {}".format(self.access_token)}
-        data = {
+        body = {
             "name": playlist_name,
             "public": False,
             "description": "Created with Setplay",
         }
-        response = handle_requests(method=method, url=url, headers=headers, data=data)
+        response = handle_requests(method=method, url=url, headers=headers, json=body)
         return response.get("id")
 
     def add_songs_to_playlist(self, playlist_id, uris):
         method = "POST"
         url = "https://api.spotify.com/v1/playlists/{}/tracks".format(playlist_id)
         headers = {"Authorization": "Bearer {}".format(self.access_token)}
-        data = {"uris": uris}
-        handle_requests(method=method, url=url, headers=headers, data=data)
+        body = {"uris": uris}
+        handle_requests(method=method, url=url, headers=headers, json=body)
 
     def add_playlist_art(self, playlist_id, playlist_art):
         method = "PUT"

@@ -20,7 +20,7 @@ class SpotifyUserAuthentication:
             "client_id": self.client_id,
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
-            "scopes": self.scopes,
+            "scope": self.scopes,
         }
         return requests.Request("GET", self.authorize_url, params=params).prepare().url
 
