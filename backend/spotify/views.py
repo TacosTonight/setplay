@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse
 from .spotify_user_authentication import SpotifyUserAuthentication
+from .spotify_client_authentication import SpotifyClientAuthentication
+from .spotify_client_service import SpotifyClientService
+from setlist.setlist_client import SetlistClient
 
 REDIRECT_URI = ""
 CLIENT_ID = ""
@@ -16,6 +19,10 @@ AUTHORIZE_URL = ""
 spotify_auth = SpotifyUserAuthentication(
     REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SCOPES, TOKEN_URL, AUTHORIZE_URL
 )
+
+spotify_client_auth = SpotifyClientAuthentication(CLIENT_ID, CLIENT_SECRET)
+setlist_client = SetlistClient()
+spotify_client_service = SpotifyClientService(spotify_client_auth, setlist_client)
 
 
 class AuthURL(APIView):
@@ -52,3 +59,28 @@ def authenticate(request):
         auth_url = r.json().get("url")
         return redirect(auth_url)
     return render(request, "spotify/auth.html")
+
+
+# Spotify Client Authorized Tasks
+class Artists(APIView):
+    def get(self, request):
+        artist_input = request.GET.get("artist", "")
+        artists = spotify_client_service.get_artists(artist_input)
+        if artists is None or not artists:
+            return Response(
+                {"error": "Unable to get artists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response({"data": artists}, status=status.HTTP_200_OK)
+
+
+class Setlist(APIView):
+    def get(self, request):
+        artist_input = request.GET.get("artist", "")
+        set_list = spotify_client_service.generate_setlist_response(artist_input)
+        if not set_list:
+            return Response(
+                {"error": "Unable to get setlist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response({"data": set_list}, status=status.HTTP_200_OK)
