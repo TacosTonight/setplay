@@ -30,6 +30,10 @@ class SpotifyClientAuthentication:
             }
         except AttributeError as err:
             print(err)
+            return {
+                "access_token": "invalid access token",
+                "expires_in": timezone.now(),
+            }
 
     def is_authenticated(self):
         return self.expires_in <= timezone.now()
