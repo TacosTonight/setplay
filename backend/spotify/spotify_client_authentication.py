@@ -20,13 +20,16 @@ class SpotifyClientAuthentication:
         return self.parse_spotify_auth(response)
 
     def parse_spotify_auth(self, response):
-        access_token = response.get("access_token")
-        expires_in = response.get("expires_in")
+        try:
+            access_token = response.get("access_token")
+            expires_in = response.get("expires_in")
 
-        return {
-            "access_token": access_token,
-            "expires_in": calculate_token_expiration_time(expires_in),
-        }
+            return {
+                "access_token": access_token,
+                "expires_in": calculate_token_expiration_time(expires_in),
+            }
+        except AttributeError as err:
+            print(err)
 
     def is_authenticated(self):
         return self.expires_in <= timezone.now()

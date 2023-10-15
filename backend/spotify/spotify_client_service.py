@@ -73,15 +73,22 @@ class SpotifyClientService:
         return max_index
 
     def parse_spotify_artist_response(self, response):
-        artists = response.get("artists", {}).get("items", [])
-        matches = [
-            {
-                "name": artist.get("name"),
-                "imgUrl": artist.get("images", [{}])[0].get("url", ""),
-            }
-            for artist in artists
-        ]
-        return matches
+        try:
+            artists = response.get("artists", {}).get("items", [])
+            matches = [
+                {
+                    "name": artist.get("name"),
+                    "imgUrl": artist.get("images", [{}])[0].get("url", ""),
+                }
+                for artist in artists
+            ]
+            return matches
+        except AttributeError as erra:
+            print(erra)
+        except TypeError as errt:
+            print(errt)
+        except IndexError as erri:
+            print(erri)
 
     def parse_spotify_track_response(self, track):
         try:
