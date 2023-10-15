@@ -4,22 +4,26 @@ from django.utils import timezone
 
 
 def calculate_token_expiration_time(expires_in):
-    return timezone.now() + timedelta(seconds=expires_in)
-
-
-def get_spotify_token_response(url, params=None, data=None):
-    r = requests.post(url, params=params, data=data)
-    if r.status_code != requests.codes.ok:
-        return None
-    return r.json()
+    if not isinstance(expires_in, int):
+        raise ValueError
+    try:
+        return timezone.now() + timedelta(seconds=expires_in)
+    except ValueError as e:
+        print(e)
 
 
 def handle_requests(url, method, headers=None, params=None, data=None, json=None):
-    if method not in ["GET", "POST", "PUT", "DELETE"]:
-        raise ValueError
-    r = requests.request(
-        method, url, headers=headers, params=params, data=data, json=json
-    )
-    if r.status_code not in [requests.codes.ok, requests.codes.created]:
-        return None
-    return r.json()
+    try:
+        if method not in ["GET", "POST", "PUT", "DELETE"]:
+            raise ValueError
+        r = requests.request(
+            method, url, headers=headers, params=params, data=data, json=json
+        )
+        r.raise_for_status()
+        return r.json()
+    except requests.exceptions.HTTPError as errh:
+        print(errh)
+    except requests.exceptions.RequestException as err:
+        print(err)
+    except ValueError as errv:
+        print(errv)

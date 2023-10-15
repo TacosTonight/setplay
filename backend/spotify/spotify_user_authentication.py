@@ -1,7 +1,7 @@
 import requests
 from django.utils import timezone
 from .models import SpotifyToken
-from spotify.utils import calculate_token_expiration_time, get_spotify_token_response
+from spotify.utils import calculate_token_expiration_time, handle_requests
 
 
 class SpotifyUserAuthentication:
@@ -41,7 +41,8 @@ class SpotifyUserAuthentication:
             "client_id": self.client_id,
             "client_secret": self.client_secret,
         }
-        response = get_spotify_token_response(self.token_url, data=data)
+        method = "POST"
+        response = handle_requests(self.token_url, method, data=data)
         SpotifyToken.objects.update_or_create(
             user=session_id,
             defaults=self.parse_spotify_auth(response, "authorization_code"),
@@ -55,31 +56,35 @@ class SpotifyUserAuthentication:
             "client_id": self.client_id,
             "client_secret": self.client_secret,
         }
-        response = get_spotify_token_response(self.token_url, data=data)
+        method = "POST"
+        response = handle_requests(self.token_url, method, data=data)
         SpotifyToken.objects.update_or_create(
             user=session_id, defaults=self.parse_spotify_auth(response, "refresh_token")
         )
 
     def parse_spotify_auth(self, response, grant_type):
-        access_token = response.get("access_token")
-        token_type = response.get("token_type")
-        refresh_token = response.get("refresh_token")
-        expires_in = response.get("expires_in")
+        try:
+            access_token = response.get("access_token")
+            token_type = response.get("token_type")
+            refresh_token = response.get("refresh_token")
+            expires_in = response.get("expires_in")
 
-        if grant_type == "authorization_code":
-            return {
-                "access_token": access_token,
-                "token_type": token_type,
-                "expires_in": calculate_token_expiration_time(expires_in),
-                "refresh_token": refresh_token,
-            }
+            if grant_type == "authorization_code":
+                return {
+                    "access_token": access_token,
+                    "token_type": token_type,
+                    "expires_in": calculate_token_expiration_time(expires_in),
+                    "refresh_token": refresh_token,
+                }
 
-        if grant_type == "refresh_token":
-            return {
-                "access_token": access_token,
-                "token_type": token_type,
-                "expires_in": calculate_token_expiration_time(expires_in),
-            }
+            if grant_type == "refresh_token":
+                return {
+                    "access_token": access_token,
+                    "token_type": token_type,
+                    "expires_in": calculate_token_expiration_time(expires_in),
+                }
+        except AttributeError as err:
+            print(err)
 
     def get_access_token(self, session_id):
         if self.is_authenticated(session_id):
