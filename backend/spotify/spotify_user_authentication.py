@@ -25,6 +25,8 @@ class SpotifyUserAuthentication:
         return requests.Request("GET", self.authorize_url, params=params).prepare().url
 
     def is_authenticated(self, session_id):
+        # In this context is_authenticated means that an entry exists for them in the db
+        # Returns false if it's their first time on the app
         user_tokens = SpotifyToken.objects.filter(user=session_id)
         if not user_tokens.exists():
             return False
