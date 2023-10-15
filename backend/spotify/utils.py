@@ -4,8 +4,6 @@ from django.utils import timezone
 
 
 def calculate_token_expiration_time(expires_in):
-    if not isinstance(expires_in, int):
-        raise ValueError
     try:
         return timezone.now() + timedelta(seconds=expires_in)
     except ValueError as e:

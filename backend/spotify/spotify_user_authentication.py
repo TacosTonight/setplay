@@ -43,10 +43,15 @@ class SpotifyUserAuthentication:
         }
         method = "POST"
         response = handle_requests(self.token_url, method, data=data)
-        SpotifyToken.objects.update_or_create(
-            user=session_id,
-            defaults=self.parse_spotify_auth(response, "authorization_code"),
-        )
+        try:
+            SpotifyToken.objects.update_or_create(
+                user=session_id,
+                defaults=self.parse_spotify_auth(response, "authorization_code"),
+            )
+        except ValueError as errv:
+            print(errv)
+        except Exception as err:
+            print(err)
 
     def refresh_tokens(self, session_id):
         refresh_token = SpotifyToken.objects.filter(user=session_id)[0].refresh_token
@@ -58,9 +63,15 @@ class SpotifyUserAuthentication:
         }
         method = "POST"
         response = handle_requests(self.token_url, method, data=data)
-        SpotifyToken.objects.update_or_create(
-            user=session_id, defaults=self.parse_spotify_auth(response, "refresh_token")
-        )
+        try:
+            SpotifyToken.objects.update_or_create(
+                user=session_id,
+                defaults=self.parse_spotify_auth(response, "refresh_token"),
+            )
+        except ValueError as errv:
+            print(errv)
+        except Exception as err:
+            print(err)
 
     def parse_spotify_auth(self, response, grant_type):
         try:
