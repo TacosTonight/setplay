@@ -39,7 +39,7 @@ class SpotifyTokenTest(TestCase):
             "expires_in": 3600,
         }
         with mock.patch(
-            "spotify.spotify_user_authentication.get_spotify_token_response",
+            "spotify.spotify_user_authentication.handle_requests",
             return_value=refresh_token_response,
         ):
             self.assertTrue(self.auth_test.is_authenticated("user1"))
@@ -67,7 +67,7 @@ class SpotifyTokenTest(TestCase):
             "refresh_token": "refresh_token",
         }
         with mock.patch(
-            "spotify.spotify_user_authentication.get_spotify_token_response",
+            "spotify.spotify_user_authentication.handle_requests",
             return_value=refresh_token_response,
         ):
             self.assertFalse(SpotifyToken.objects.filter(user="user2").exists())

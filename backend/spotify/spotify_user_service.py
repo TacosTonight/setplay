@@ -13,7 +13,10 @@ class SpotifyUserService:
         url = "https://api.spotify.com/v1/me"
         headers = {"Authorization": "Bearer {}".format(self.access_token)}
         response = handle_requests(method=method, url=url, headers=headers)
-        return response.get("id")
+        try:
+            return response.get("id")
+        except AttributeError as err:
+            print(err)
 
     def create_playlist_and_get_id(self, playlist_name, user_id):
         method = "POST"
@@ -25,7 +28,10 @@ class SpotifyUserService:
             "description": "Created with Setplay",
         }
         response = handle_requests(method=method, url=url, headers=headers, json=body)
-        return response.get("id")
+        try:
+            return response.get("id")
+        except AttributeError as err:
+            print(err)
 
     def add_songs_to_playlist(self, playlist_id, uris):
         method = "POST"
