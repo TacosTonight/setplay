@@ -29,6 +29,9 @@ class SpotifyClientService:
         except AttributeError as e:
             print(e)
             return []
+        except TypeError as e:
+            print(e)
+            return []
 
     def get_setlist_from_setlistfm(self, artist):
         most_recent_set = self.setlist_client.get_most_recent_set(
