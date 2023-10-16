@@ -1,8 +1,11 @@
 from unittest import mock
 from django.test import TestCase
+from django.urls import reverse
 from spotify.models import SpotifyToken
 from .spotify_user_authentication import SpotifyUserAuthentication
 from setplay.settings import TIME_ZONE
+from rest_framework.test import APIRequestFactory
+from .views import Artists, Setlist
 
 
 class SpotifyTokenTest(TestCase):
@@ -124,3 +127,68 @@ class SpotifyTokenTest(TestCase):
             self.assertTrue("access_token" in parsed_response)
             self.assertTrue("token_type" in parsed_response)
             self.assertTrue("expires_in" in parsed_response)
+
+
+class ArtistViewTest(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+    def test_get_artists_is_none(self):
+        with mock.patch(
+            "spotify.views.spotify_client_service.get_artists",
+            return_value=None,
+        ):
+            url = reverse("spotify-artists")
+            request = self.factory.get(url, {"artist": "artist"})
+            response = Artists.as_view()(request)
+            self.assertEqual(400, response.status_code)
+            self.assertEquals("Unable to get artists", response.data["error"])
+
+    def test_get_artists_is_empty(self):
+        with mock.patch(
+            "spotify.views.spotify_client_service.get_artists",
+            return_value=[],
+        ):
+            url = reverse("spotify-artists")
+            request = self.factory.get(url, {"artist": "artist"})
+            response = Artists.as_view()(request)
+            self.assertEqual(400, response.status_code)
+            self.assertEquals("Unable to get artists", response.data["error"])
+
+    def test_get_artist_has_data(self):
+        with mock.patch(
+            "spotify.views.spotify_client_service.get_artists",
+            return_value=[{"data": "sample data"}],
+        ):
+            url = reverse("spotify-artists")
+            request = self.factory.get(url, {"artist": "artist"})
+            response = Artists.as_view()(request)
+            self.assertEqual(200, response.status_code)
+            self.assertIn("data", response.data)
+
+
+class SetlistViewTest(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+    def test_generate_setlist_response_is_empty(self):
+        with mock.patch(
+            "spotify.views.spotify_client_service.generate_setlist_response",
+            return_value=[],
+        ):
+            url = reverse("spotify-setlist")
+            request = self.factory.get(url, {"artist": "artist"})
+            response = Setlist.as_view()(request)
+            self.assertEqual(400, response.status_code)
+            self.assertEquals("Unable to get setlist", response.data["error"])
+
+    def test_generate_setlist_response_has_data(self):
+        with mock.patch(
+            "spotify.views.spotify_client_service.generate_setlist_response",
+            return_value=[{"data": "sample data"}],
+        ):
+            url = reverse("spotify-setlist")
+            request = self.factory.get(url, {"artist": "artist"})
+            response = Setlist.as_view()(request)
+            self.assertEqual(200, response.status_code)
+            self.assertIn("data", response.data)
