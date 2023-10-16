@@ -6,7 +6,8 @@ class SpotifyClientAuthentication:
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.access_token, self.expires_in = self.request_new_tokens().values()
+        self.access_token = None
+        self.expires_in = None
 
     def request_new_tokens(self):
         url = "https://accounts.spotify.com/api/token"
@@ -36,6 +37,8 @@ class SpotifyClientAuthentication:
             }
 
     def is_authenticated(self):
+        if self.expires_in is None:
+            return False
         return self.expires_in < timezone.now()
 
     def refresh_tokens(self):

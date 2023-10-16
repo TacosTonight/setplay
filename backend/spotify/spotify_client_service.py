@@ -21,10 +21,17 @@ class SpotifyClientService:
 
     def generate_setlist_response(self, artist):
         setlist_fm = self.get_setlist_from_setlistfm(artist)
-        setlist_with_spotify_data = [
-            self.get_song_data_from_spotify(artist, song) for song in setlist_fm
-        ]
-        return setlist_with_spotify_data
+        try:
+            setlist_with_spotify_data = [
+                self.get_song_data_from_spotify(artist, song) for song in setlist_fm
+            ]
+            return setlist_with_spotify_data
+        except AttributeError as e:
+            print(e)
+            return []
+        except TypeError as e:
+            print(e)
+            return []
 
     def get_setlist_from_setlistfm(self, artist):
         most_recent_set = self.setlist_client.get_most_recent_set(
