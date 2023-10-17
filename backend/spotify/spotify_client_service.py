@@ -85,7 +85,9 @@ class SpotifyClientService:
             matches = [
                 {
                     "name": artist.get("name"),
-                    "imgUrl": artist.get("images", [{}])[0].get("url", ""),
+                    "imgUrl": artist.get("images", [{}])[0].get("url", "")
+                    if artist.get("images")
+                    else "",
                 }
                 for artist in artists
             ]
