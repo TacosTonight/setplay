@@ -19,6 +19,7 @@ class SpotifyUserService:
             return response.get("id")
         except AttributeError as err:
             print(err)
+            raise
 
     def create_playlist_and_get_id(self, access_token, playlist_name, user_id):
         method = "POST"
@@ -34,6 +35,7 @@ class SpotifyUserService:
             return response.get("id")
         except AttributeError as err:
             print(err)
+            raise
 
     def add_songs_to_playlist(self, access_token, playlist_id, uris):
         method = "POST"

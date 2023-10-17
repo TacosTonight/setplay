@@ -104,7 +104,7 @@ class SpotifyPlaylist(APIView):
                 {"message": "Playlist created successfully"},
                 status=status.HTTP_201_CREATED,
             )
-        except Exception:
+        except AttributeError:
             return Response(
                 {"message": "Unable to create playlist"},
                 status=status.HTTP_400_BAD_REQUEST,
