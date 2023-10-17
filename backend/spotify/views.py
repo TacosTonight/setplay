@@ -8,6 +8,7 @@ from .spotify_user_authentication import SpotifyUserAuthentication
 from .spotify_client_authentication import SpotifyClientAuthentication
 from .spotify_client_service import SpotifyClientService
 from setlist.setlist_client import SetlistClient
+from .spotify_user_service import SpotifyUserService
 
 REDIRECT_URI = ""
 CLIENT_ID = ""
@@ -19,6 +20,7 @@ AUTHORIZE_URL = ""
 spotify_auth = SpotifyUserAuthentication(
     REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SCOPES, TOKEN_URL, AUTHORIZE_URL
 )
+spotify_user_service = SpotifyUserService()
 
 spotify_client_auth = SpotifyClientAuthentication(CLIENT_ID, CLIENT_SECRET)
 setlist_client = SetlistClient()
@@ -84,3 +86,26 @@ class Setlist(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response({"data": set_list}, status=status.HTTP_200_OK)
+
+
+# Spotify User Authorized Tasks
+class SpotifyPlaylist(APIView):
+    def post(self, request):
+        uris = request.data.get("uris", [])
+        playlist_name = request.data.get("playlistName")
+        playlist_art = request.data.get("playlistArt")
+        access_token = spotify_auth.get_access_token(self.request.session.session_key)
+
+        try:
+            spotify_user_service.create_playlist(
+                access_token, uris, playlist_name, playlist_art
+            )
+            return Response(
+                {"message": "Playlist created successfully"},
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception:
+            return Response(
+                {"message": "Unable to create playlist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
