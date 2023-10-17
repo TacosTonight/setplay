@@ -94,8 +94,7 @@ class SpotifyPlaylist(APIView):
         uris = request.data.get("uris", [])
         playlist_name = request.data.get("playlistName")
         playlist_art = request.data.get("playlistArt")
-        access_token = spotify_auth.get_access_token(self.request.session.session_key)
-
+        access_token = spotify_auth.get_access_token(request.session.session_key)
         try:
             spotify_user_service.create_playlist(
                 access_token, uris, playlist_name, playlist_art
@@ -104,7 +103,7 @@ class SpotifyPlaylist(APIView):
                 {"message": "Playlist created successfully"},
                 status=status.HTTP_201_CREATED,
             )
-        except Exception:
+        except AttributeError:
             return Response(
                 {"message": "Unable to create playlist"},
                 status=status.HTTP_400_BAD_REQUEST,
