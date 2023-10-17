@@ -10,4 +10,5 @@ urlpatterns = [
     path("is-authed", IsAuthenticated.as_view(), name="is-authed"),
     path("artists", Artists.as_view(), name="spotify-artists"),
     path("setlist", Setlist.as_view(), name="spotify-setlist"),
+    path("create-playlist", SpotifyPlaylist.as_view(), name="spotify-create-playlist"),
 ]
