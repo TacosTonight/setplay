@@ -1,4 +1,5 @@
 import requests
+import os
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,12 +11,12 @@ from .spotify_client_service import SpotifyClientService
 from setlist.setlist_client import SetlistClient
 from .spotify_user_service import SpotifyUserService
 
-REDIRECT_URI = ""
-CLIENT_ID = ""
-CLIENT_SECRET = ""
-SCOPES = ""
-TOKEN_URL = ""
-AUTHORIZE_URL = ""
+REDIRECT_URI = os.environ.get("REDIRECT_URI")
+CLIENT_ID = os.environ.get("CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+SCOPES = os.environ.get("SCOPES")
+TOKEN_URL = os.environ.get("TOKEN_URL")
+AUTHORIZE_URL = os.environ.get("AUTHORIZE_URL")
 
 spotify_auth = SpotifyUserAuthentication(
     REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SCOPES, TOKEN_URL, AUTHORIZE_URL
@@ -73,7 +74,7 @@ class Artists(APIView):
                 {"error": "Unable to get artists"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response({"data": artists}, status=status.HTTP_200_OK)
+        return Response({"artists": artists}, status=status.HTTP_200_OK)
 
 
 class Setlist(APIView):
@@ -85,7 +86,7 @@ class Setlist(APIView):
                 {"error": "Unable to get setlist"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response({"data": set_list}, status=status.HTTP_200_OK)
+        return Response({"songs": set_list}, status=status.HTTP_200_OK)
 
 
 # Spotify User Authorized Tasks

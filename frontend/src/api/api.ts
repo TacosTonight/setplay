@@ -1,17 +1,29 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const BASE_URL = "";
+const GET_ARTISTS_URL = "http://localhost:8000/spotify/artists";
+const GET_SETLIST_URL = "http://localhost:8000/spotify/setlist";
 
 export const fetchArtists = async (
   artistInput: string
 ): Promise<ArtistMatches> => {
   try {
-    const response = await axios.get(`${BASE_URL}`, {
+    const response = await axios.get(`${GET_ARTISTS_URL}`, {
       params: {
-        format: "json",
-        method: "artist.search",
         artist: artistInput,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSetlist = async (selectedArtist:string): Promise<Setlist> => {
+  try {
+    const response = await axios.get(`${GET_SETLIST_URL}`, {
+      params: {
+        artist: selectedArtist,
       },
     });
     return response.data;
