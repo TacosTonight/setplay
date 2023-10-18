@@ -41,27 +41,16 @@ class IsAuthenticated(APIView):
         return Response({"status": is_authed}, status=status.HTTP_200_OK)
 
 
-def spotify_callback(request):
-    code = request.GET.get("code")
-    error = request.GET.get("error")
-    if error:
-        return HttpResponse("Authentication denied")
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-    spotify_auth.request_new_tokens(request.session.session_key, code)
-    return redirect("auth-confirmation")
-
-
-def auth_confirmation(request):
-    return HttpResponse("temporary redirect page")
-
-
-def authenticate(request):
-    if request.method == "POST":
-        r = requests.get("http://127.0.0.1:8000/spotify/get-auth-url")
-        auth_url = r.json().get("url")
-        return redirect(auth_url)
-    return render(request, "spotify/auth.html")
+class SpotifyCallback(APIView):
+    def get(self, request):
+        code = request.GET.get("code")
+        error = request.GET.get("error")
+        if error:
+            return HttpResponse("Authentication denied")
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
+        spotify_auth.request_new_tokens(request.session.session_key, code)
+        return HttpResponse("Authenticated")
 
 
 # Spotify Client Authorized Tasks

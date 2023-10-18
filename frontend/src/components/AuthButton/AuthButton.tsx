@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
+import { createAuthURL } from "../../api/api";
 import SpotifyLogo from "../../assets/Spotify_Logo_CMYK_Black.png";
 import PlaylistManagementModal from "../PlaylistManagementModal";
 
@@ -18,7 +19,27 @@ const AuthButton: React.FC<AuthButtonProps> = ({ createPlaylist }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const loginButton = <Button variant="contained">Login</Button>;
+  const handleLogin = async () => {
+    try {
+      const url = await createAuthURL();
+
+      const width = 600;
+      const height = 400;
+      const leftPosition = 325;
+      const topPosition = 200;
+
+      const features = `width=${width},height=${height},left=${leftPosition},top=${topPosition},scrollbars=yes,resizable=yes`;
+      window.open(url, "SmallerWindow", features);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loginButton = (
+    <Button variant="contained" onClick={handleLogin}>
+      Login
+    </Button>
+  );
 
   const saveButton = (
     <Button variant="contained" onClick={handleOpen}>

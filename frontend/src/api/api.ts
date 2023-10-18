@@ -3,6 +3,7 @@ import { ArtistMatches, Setlist } from "../types";
 
 const GET_ARTISTS_URL = "http://localhost:8000/spotify/artists";
 const GET_SETLIST_URL = "http://localhost:8000/spotify/setlist";
+const AUTH_URL = "http://localhost:8000/spotify/get-auth-url";
 
 export const fetchArtists = async (
   artistInput: string
@@ -31,6 +32,17 @@ export const fetchSetlist = async (selectedArtist:string): Promise<Setlist> => {
     throw error;
   }
 };
+
+export const createAuthURL = async () => {
+  try {
+    const response = await axios.get(`${AUTH_URL}`);
+    return response.data.url;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Simulated Requests
 
 const exampleArtistMatches: ArtistMatches = {
   artists: [
