@@ -86,7 +86,7 @@ class Setlist(APIView):
                 {"error": "Unable to get setlist"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response({"data": set_list}, status=status.HTTP_200_OK)
+        return Response({"songs": set_list}, status=status.HTTP_200_OK)
 
 
 # Spotify User Authorized Tasks

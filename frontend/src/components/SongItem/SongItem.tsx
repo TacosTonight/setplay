@@ -15,7 +15,7 @@ const SongItem: React.FC<SongItemProps> = ({ title, position, albumUrl }) => {
         ></AlbumCard>
       </Grid>
       <Grid item>
-        <Typography variant="h2">{title}</Typography>
+        <Typography variant="h5">{title}</Typography>
       </Grid>
     </Grid>
   );
