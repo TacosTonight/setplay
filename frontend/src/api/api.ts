@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const BASE_URL = "";
+const BASE_URL = "http://localhost:8000/spotify/artists";
 
 export const fetchArtists = async (
   artistInput: string
@@ -9,8 +9,6 @@ export const fetchArtists = async (
   try {
     const response = await axios.get(`${BASE_URL}`, {
       params: {
-        format: "json",
-        method: "artist.search",
         artist: artistInput,
       },
     });
