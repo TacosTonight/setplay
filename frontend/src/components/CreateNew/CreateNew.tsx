@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const CreateNew = () => {
   const artistName = useSelector((state: RootState) => state.artist.name);
-  const playlistTitle = `Setplay: ${artistName}`;
+  const playlistTitle = `Setplay // ${artistName}`;
 
   return (
     <Box padding={3}>
