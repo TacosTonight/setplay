@@ -4,7 +4,22 @@ import { Skeleton } from "@mui/material";
 const PlaylistArt = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [base64Image, setBase64Image] = useState("");
-  const artistImg = "public/mid_setplayart.png";
+  const filePaths = [
+    "/mid_setplayart.png",
+    "/mid_setplayart2.png",
+    "/mid_setplayart3.png",
+    "/mid_setplayart4.png",
+    "/mid_setplayart5.png",
+  ];
+  const getRandomFileFromFolder = () => {
+    const randomIndex = Math.floor(Math.random() * filePaths.length);
+    return filePaths[randomIndex];
+  };
+  const [artistImg, setArtistImg] = useState("");
+
+  useEffect(() => {
+    setArtistImg(getRandomFileFromFolder());
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
