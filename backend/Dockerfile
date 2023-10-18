@@ -12,3 +12,9 @@ WORKDIR /code
 #Install dependencies
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+
+#Expose Port
+EXPOSE 8000
+
+#Copy Project
+COPY . .
