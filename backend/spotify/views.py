@@ -74,7 +74,7 @@ class Artists(APIView):
                 {"error": "Unable to get artists"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response({"data": artists}, status=status.HTTP_200_OK)
+        return Response({"artists": artists}, status=status.HTTP_200_OK)
 
 
 class Setlist(APIView):

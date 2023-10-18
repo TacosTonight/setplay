@@ -25,7 +25,14 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["frontend"]
+ALLOWED_HOSTS = ["frontend", "localhost"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+CORS_ALLOWED_HEADERS = [
+    "Access-Control-Allow-Origin",
+    "Content-Type",
+]
 
 
 # Application definition
@@ -40,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "setplay",
     "spotify",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "setplay.urls"
