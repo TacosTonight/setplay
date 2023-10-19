@@ -1,11 +1,18 @@
 import { Box, Grid, TextField } from "@mui/material";
 import PlaylistArt from "../PlaylistArt";
 import { RootState } from "../../redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { updatePlaylistName } from "../../redux/playlistManagementSlice";
 
 const CreateNew = () => {
   const artistName = useSelector((state: RootState) => state.artist.name);
   const playlistTitle = `Setplay // ${artistName}`;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updatePlaylistName(playlistTitle));
+  }, [artistName]);
 
   return (
     <Box padding={3}>

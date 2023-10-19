@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updatePlaylistArt } from "../../redux/playlistManagementSlice";
 
 const PlaylistArt = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,10 +18,15 @@ const PlaylistArt = () => {
     return filePaths[randomIndex];
   };
   const [artistImg, setArtistImg] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setArtistImg(getRandomFileFromFolder());
   }, []);
+
+  useEffect(() => {
+    dispatch(updatePlaylistArt(base64Image));
+  }, [base64Image]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
