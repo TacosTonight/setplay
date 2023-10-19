@@ -4,7 +4,10 @@ import WelcomeScreen from "./components/WelcomeScreen";
 import FadeTransition from "./components/FadeTransition";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RootState } from "./redux";
+import { isUserAuthed } from "./api/api";
+import { updateIsAuthToSpotify } from "./redux/isAuthToSpotifySlice";
 import CreatePlaylistStatus from "./components/CreatePlaylistStatus";
 
 function App() {
@@ -14,7 +17,19 @@ function App() {
   const [showMainContentArea, setShowMainContentArea] = useState(false);
   const songs = useSelector((state: RootState) => state.artist.name);
 
+  const dispatch = useDispatch();
+
+  const checkAuth = async () => {
+    try {
+      const isAuthed = await isUserAuthed();
+      dispatch(updateIsAuthToSpotify(isAuthed));
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
+    checkAuth();
     setShowWelcomeScreen(true);
   }, []);
 

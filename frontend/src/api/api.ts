@@ -1,9 +1,10 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const GET_ARTISTS_URL = "http://localhost:8000/spotify/artists";
-const GET_SETLIST_URL = "http://localhost:8000/spotify/setlist";
-const AUTH_URL = "http://localhost:8000/spotify/get-auth-url";
+const GET_ARTISTS_URL = "http://127.0.0.1:8000/spotify/artists";
+const GET_SETLIST_URL = "http://127.0.0.1:8000/spotify/setlist";
+const AUTH_URL = "http://127.0.0.1:8000/spotify/get-auth-url";
+const IS_AUTH_URL = "http://127.0.0.1:8000/spotify/is-authed";
 
 export const fetchArtists = async (
   artistInput: string
@@ -37,6 +38,15 @@ export const createAuthURL = async () => {
   try {
     const response = await axios.get(`${AUTH_URL}`);
     return response.data.url;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const isUserAuthed = async () => {
+  try {
+    const response = await axios.get(`${IS_AUTH_URL}`,  {withCredentials:true},);
+    return response.data.authStatus;
   } catch (error) {
     console.error('Error:', error);
   }

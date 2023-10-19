@@ -37,8 +37,8 @@ class AuthURL(APIView):
 
 class IsAuthenticated(APIView):
     def get(self, request):
-        is_authed = spotify_auth.is_authenticated(self.request.session.session_key)
-        return Response({"status": is_authed}, status=status.HTTP_200_OK)
+        is_authed = spotify_auth.is_authenticated(request.session.session_key)
+        return Response({"authStatus": is_authed}, status=status.HTTP_200_OK)
 
 
 class SpotifyCallback(APIView):
