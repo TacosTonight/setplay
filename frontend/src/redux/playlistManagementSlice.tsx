@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type PlaylistStatus = {
   isSuccess: boolean;
-  isError: boolean;
+  isError: boolean | null;
   isLoading: boolean;
 };
 
@@ -19,7 +19,7 @@ const playlistManagementSlice = createSlice({
     updatePlaylistIsSuccess: (state, action: PayloadAction<boolean>) => {
       state.isSuccess = action.payload;
     },
-    updatePlaylistIsError: (state, action: PayloadAction<boolean>) => {
+    updatePlaylistIsError: (state, action: PayloadAction<boolean | null>) => {
       state.isError = action.payload;
     },
     updatePlaylistIsLoading: (state, action: PayloadAction<boolean>) => {

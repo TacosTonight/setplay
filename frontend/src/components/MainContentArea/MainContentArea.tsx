@@ -8,23 +8,24 @@ import {
   updatePlaylistIsSuccess,
   updatePlaylistIsLoading,
 } from "../../redux/playlistManagementSlice";
-import { useCreatePlaylist } from "../../hooks/useCreatePlaylist";
+import useRequestWithStatus from "../../hooks/useRequestWithStatus";
+import { createPlaylistOnSpotify } from "../../api/api";
 
 const MainContentArea = () => {
-  const { isError, isSuccess, isLoading, mutate } = useCreatePlaylist();
+  const { loading, success, error, makeRequest } = useRequestWithStatus();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(updatePlaylistIsSuccess(isSuccess));
-    dispatch(updatePlaylistIsError(isError));
-    dispatch(updatePlaylistIsLoading(isLoading));
-  }, [isSuccess, isError, isLoading, dispatch]);
+    dispatch(updatePlaylistIsSuccess(success));
+    dispatch(updatePlaylistIsError(error));
+    dispatch(updatePlaylistIsLoading(loading));
+  }, [success, error, loading, dispatch]);
 
   const createPlaylist = async () => {
     try {
-      await mutate();
+      await makeRequest(createPlaylistOnSpotify, [], "", "");
     } catch (error) {
-      console.error("Error creating playlist:", error);
+      console.error(error);
     }
   };
 

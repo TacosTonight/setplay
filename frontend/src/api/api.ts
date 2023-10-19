@@ -5,6 +5,7 @@ const GET_ARTISTS_URL = "http://127.0.0.1:8000/spotify/artists";
 const GET_SETLIST_URL = "http://127.0.0.1:8000/spotify/setlist";
 const AUTH_URL = "http://127.0.0.1:8000/spotify/get-auth-url";
 const IS_AUTH_URL = "http://127.0.0.1:8000/spotify/is-authed";
+const CREATE_PLAYLIST_URL = "http://127.0.0.1:8000/spotify/create-playlist";
 
 export const fetchArtists = async (
   artistInput: string
@@ -51,6 +52,22 @@ export const isUserAuthed = async () => {
     console.error('Error:', error);
   }
 };
+
+export const createPlaylistOnSpotify = async(uris: string[],playlistName: string,playlistArt: string):Promise<String>=>{
+  try {
+    const response = await axios.get(`${CREATE_PLAYLIST_URL}`, {
+      withCredentials: true,
+      params: {
+        uris: uris,
+        playlistName: playlistName,
+        playlistArt: playlistArt
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 // Simulated Requests
 

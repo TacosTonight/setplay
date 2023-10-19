@@ -80,10 +80,10 @@ class Setlist(APIView):
 
 # Spotify User Authorized Tasks
 class SpotifyPlaylist(APIView):
-    def post(self, request):
-        uris = request.data.get("uris", [])
-        playlist_name = request.data.get("playlistName")
-        playlist_art = request.data.get("playlistArt")
+    def get(self, request):
+        uris = request.GET.get("uris", [])
+        playlist_name = request.GET.get("playlistName")
+        playlist_art = request.GET.get("playlistArt")
         access_token = spotify_auth.get_access_token(request.session.session_key)
         try:
             spotify_user_service.create_playlist(
