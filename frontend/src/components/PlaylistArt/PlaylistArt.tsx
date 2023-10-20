@@ -6,23 +6,8 @@ import { updatePlaylistArt } from "../../redux/playlistManagementSlice";
 const PlaylistArt = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [base64Image, setBase64Image] = useState("");
-  const filePaths = [
-    "/mid_setplayart.png",
-    "/mid_setplayart2.png",
-    "/mid_setplayart3.png",
-    "/mid_setplayart4.png",
-    "/mid_setplayart5.png",
-  ];
-  const getRandomFileFromFolder = () => {
-    const randomIndex = Math.floor(Math.random() * filePaths.length);
-    return filePaths[randomIndex];
-  };
-  const [artistImg, setArtistImg] = useState("");
+  const artistImg = "/mid_setplayart3.jpg";
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setArtistImg(getRandomFileFromFolder());
-  }, []);
 
   useEffect(() => {
     dispatch(updatePlaylistArt(base64Image));
@@ -36,28 +21,34 @@ const PlaylistArt = () => {
       const img = new Image();
       img.src = artistImg;
       img.onload = function () {
-        canvas.width = img.width;
-        canvas.height = img.height;
+        const targetWidth = 300; // Set the desired width
+        const targetHeight = 300; // Set the desired height
 
-        ctx.drawImage(img, 0, 0);
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Draw the image with the specified dimensions
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
         const msg = "Created with Setplay";
         const outlineColor = "black"; // Define the outline color
         const textColor = "white"; // Define the text color
-        ctx.font = "50px bold";
+        ctx.font = "20px bold";
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
 
         const textWidth = ctx.measureText(msg).width;
         const xCoordinate = (canvas.width - textWidth) / 2;
 
         // Draw the text with outline
         ctx.fillStyle = outlineColor;
-        ctx.fillText(msg, xCoordinate - 2, canvas.height - 10); // Offset by -2 pixels
+        ctx.fillText(msg, xCoordinate - 1.5, canvas.height - 10); // Offset by -2 pixels
 
         // Draw the text over the outline
         ctx.fillStyle = textColor;
         ctx.fillText(msg, xCoordinate, canvas.height - 10);
 
-        const base64URL = canvas.toDataURL("image/png");
+        const base64URL = canvas.toDataURL("image/jpeg"); // Use JPEG format with 60% quality
         setBase64Image(base64URL);
       };
     }

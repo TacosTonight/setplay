@@ -10,6 +10,8 @@ from .spotify_client_authentication import SpotifyClientAuthentication
 from .spotify_client_service import SpotifyClientService
 from setlist.setlist_client import SetlistClient
 from .spotify_user_service import SpotifyUserService
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 REDIRECT_URI = os.environ.get("REDIRECT_URI")
 CLIENT_ID = os.environ.get("CLIENT_ID")
@@ -79,11 +81,13 @@ class Setlist(APIView):
 
 
 # Spotify User Authorized Tasks
+@method_decorator(csrf_exempt, name="dispatch")
 class SpotifyPlaylist(APIView):
-    def get(self, request):
-        uris = request.GET.get("uris", [])
-        playlist_name = request.GET.get("playlistName")
-        playlist_art = request.GET.get("playlistArt")
+    def post(self, request):
+        uris = request.data.get("uris", [])
+        playlist_name = request.data.get("playlistName")
+        playlist_art = request.data.get("playlistArt")
+        playlist_art = playlist_art.replace("data:image/jpeg;base64,", "").strip()
         access_token = spotify_auth.get_access_token(request.session.session_key)
         try:
             spotify_user_service.create_playlist(

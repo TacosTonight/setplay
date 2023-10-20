@@ -54,15 +54,31 @@ export const isUserAuthed = async () => {
 };
 
 export const createPlaylistOnSpotify = async(uris: string[],playlistName: string,playlistArt: string):Promise<String>=>{
+  const cookiesArray = document.cookie.split(';');
+  let csrfToken = null;
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    const cookie = cookiesArray[i].trim();
+    if (cookie.startsWith('csrftoken=')) {
+      csrfToken = cookie.substring('csrftoken='.length, cookie.length);
+      break;
+    }
+  }
   try {
-    const response = await axios.get(`${CREATE_PLAYLIST_URL}`, {
-      withCredentials: true,
-      params: {
+    const response = await axios.post(
+      CREATE_PLAYLIST_URL,
+      {
         uris: uris,
         playlistName: playlistName,
-        playlistArt: playlistArt
+        playlistArt: playlistArt,
       },
-    });
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrfToken,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error;
