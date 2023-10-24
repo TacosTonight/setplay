@@ -14,8 +14,10 @@ const SongItem: React.FC<SongItemProps> = ({ title, position, albumUrl }) => {
           size={size}
         ></AlbumCard>
       </Grid>
-      <Grid item>
-        <Typography variant="h5">{title}</Typography>
+      <Grid item sx={{ width: "45rem" }}>
+        <Typography noWrap variant="h5">
+          {title}
+        </Typography>
       </Grid>
     </Grid>
   );

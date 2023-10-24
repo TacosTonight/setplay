@@ -9,7 +9,7 @@ type SaveButtonProps = {
 
 const SaveButton: React.FC<SaveButtonProps> = ({ createPlaylist }) => {
   const isLoading = useSelector(
-    (state: RootState) => state.playlistManagement.isLoading
+    (state: RootState) => state.playlistManagement.status.isLoading
   );
   const renderButton = (isLoading: boolean) => {
     return isLoading ? (
