@@ -16,7 +16,8 @@ const calculateTotalDuration = (setlist: Setlist) => {
 const DurationDisplay = () => {
   const setlist = useSelector((state: RootState) => state.setlist);
   const milliseconds = calculateTotalDuration(setlist);
-  const numberOfSongs = setlist.songs.length;
+  const numberOfSongs = setlist.uris.length;
+  const totalNumberOfSongs = setlist.songs.length;
   const totalMinutes = Math.floor(milliseconds / (1000 * 60));
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
@@ -37,7 +38,7 @@ const DurationDisplay = () => {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Typography variant="body1">{`Number of songs: ${numberOfSongs}`}</Typography>
+        <Typography variant="body1">{`Available songs: ${numberOfSongs}/${totalNumberOfSongs}`}</Typography>
       </Grid>
       <Grid item>
         <Typography variant="body1">{`Duration: ${displayTime.trim()}`}</Typography>
