@@ -13,7 +13,9 @@ const initialState: SetlistWithLoadingAndUris = {
 };
 
 const extractUris = (setlist: Setlist): string[] => {
-  return setlist.songs.map((song) => song.uri);
+  return setlist.songs
+    .filter((song) => song.uri !== "TRACK NOT AVAILABLE")
+    .map((song) => song.uri);
 };
 
 const setlistSlice = createSlice({

@@ -108,7 +108,7 @@ class SpotifyClientService:
             uri = track.get("uri")
         except AttributeError as e:
             print(e)
-            title = track
+            title = "{} (TRACK NOT AVAILABLE)".format(track)
             album_name = "TRACK NOT AVAILABLE"
             album_art = "TRACK NOT AVAILABLE"
             duration = 0
