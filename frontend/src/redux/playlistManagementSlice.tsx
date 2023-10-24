@@ -1,15 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+type PlaylistMetadata = {
+  playlistName: string;
+  playlistArt: string;
+};
+
 type PlaylistStatus = {
   isSuccess: boolean;
-  isError: boolean;
+  isError: boolean | null;
   isLoading: boolean;
 };
 
-const initialState: PlaylistStatus = {
-  isSuccess: false,
-  isError: false,
-  isLoading: false,
+type PlaylistManagement = {
+  metadata: PlaylistMetadata;
+  status: PlaylistStatus;
+};
+
+const initialState: PlaylistManagement = {
+  metadata: {
+    playlistName: "",
+    playlistArt: "",
+  },
+  status: {
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+  },
 };
 
 const playlistManagementSlice = createSlice({
@@ -17,13 +33,19 @@ const playlistManagementSlice = createSlice({
   initialState,
   reducers: {
     updatePlaylistIsSuccess: (state, action: PayloadAction<boolean>) => {
-      state.isSuccess = action.payload;
+      state.status.isSuccess = action.payload;
     },
-    updatePlaylistIsError: (state, action: PayloadAction<boolean>) => {
-      state.isError = action.payload;
+    updatePlaylistIsError: (state, action: PayloadAction<boolean | null>) => {
+      state.status.isError = action.payload;
     },
     updatePlaylistIsLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
+      state.status.isLoading = action.payload;
+    },
+    updatePlaylistName: (state, action: PayloadAction<string>) => {
+      state.metadata.playlistName = action.payload;
+    },
+    updatePlaylistArt: (state, action: PayloadAction<string>) => {
+      state.metadata.playlistArt = action.payload;
     },
   },
 });
@@ -32,5 +54,7 @@ export const {
   updatePlaylistIsSuccess,
   updatePlaylistIsError,
   updatePlaylistIsLoading,
+  updatePlaylistName,
+  updatePlaylistArt,
 } = playlistManagementSlice.actions;
 export default playlistManagementSlice.reducer;

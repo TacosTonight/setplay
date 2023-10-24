@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Setlist } from "../types";
 
-type SetlistWithLoading = Setlist & {
+type SetlistWithLoadingAndUris = Setlist & {
   isLoading: boolean;
+  uris: string[];
 };
 
-const initialState: SetlistWithLoading = {
+const initialState: SetlistWithLoadingAndUris = {
   songs: [],
   isLoading: false,
+  uris: [],
+};
+
+const extractUris = (setlist: Setlist): string[] => {
+  return setlist.songs.map((song) => song.uri);
 };
 
 const setlistSlice = createSlice({
@@ -16,6 +22,7 @@ const setlistSlice = createSlice({
   reducers: {
     updateSetlist: (state, action: PayloadAction<Setlist>) => {
       state.songs = action.payload.songs;
+      state.uris = extractUris(action.payload);
     },
     updateSetlistIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;

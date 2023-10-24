@@ -1,8 +1,11 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const GET_ARTISTS_URL = "http://localhost:8000/spotify/artists";
-const GET_SETLIST_URL = "http://localhost:8000/spotify/setlist";
+const GET_ARTISTS_URL = "http://127.0.0.1:8000/spotify/artists";
+const GET_SETLIST_URL = "http://127.0.0.1:8000/spotify/setlist";
+const AUTH_URL = "http://127.0.0.1:8000/spotify/get-auth-url";
+const IS_AUTH_URL = "http://127.0.0.1:8000/spotify/is-authed";
+const CREATE_PLAYLIST_URL = "http://127.0.0.1:8000/spotify/create-playlist";
 
 export const fetchArtists = async (
   artistInput: string
@@ -31,6 +34,58 @@ export const fetchSetlist = async (selectedArtist:string): Promise<Setlist> => {
     throw error;
   }
 };
+
+export const createAuthURL = async () => {
+  try {
+    const response = await axios.get(`${AUTH_URL}`);
+    return response.data.url;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const isUserAuthed = async () => {
+  try {
+    const response = await axios.get(`${IS_AUTH_URL}`,  {withCredentials:true},);
+    return response.data.authStatus;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const createPlaylistOnSpotify = async(uris: string[],playlistName: string,playlistArt: string):Promise<String>=>{
+  const cookiesArray = document.cookie.split(';');
+  let csrfToken = null;
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    const cookie = cookiesArray[i].trim();
+    if (cookie.startsWith('csrftoken=')) {
+      csrfToken = cookie.substring('csrftoken='.length, cookie.length);
+      break;
+    }
+  }
+  try {
+    const response = await axios.post(
+      CREATE_PLAYLIST_URL,
+      {
+        uris: uris,
+        playlistName: playlistName,
+        playlistArt: playlistArt,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrfToken,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Simulated Requests
 
 const exampleArtistMatches: ArtistMatches = {
   artists: [

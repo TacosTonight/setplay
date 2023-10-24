@@ -1,4 +1,4 @@
-import { fetchSetlist, simulateFetchSetlist } from "../api/api";
+import { fetchSetlist } from "../api/api";
 import { useQuery } from "react-query";
 import { Setlist } from "../types";
 

@@ -1,30 +1,46 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 import Setlist from "../Setlist";
 import SetlistStats from "../SetlistStats";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updatePlaylistIsError,
   updatePlaylistIsSuccess,
   updatePlaylistIsLoading,
 } from "../../redux/playlistManagementSlice";
-import { useCreatePlaylist } from "../../hooks/useCreatePlaylist";
+import { createPlaylistOnSpotify } from "../../api/api";
+import { RootState } from "../../redux";
+import useRequestWithStatus from "../../hooks/useRequestWithStatus";
 
 const MainContentArea = () => {
-  const { isError, isSuccess, isLoading, mutate } = useCreatePlaylist();
+  const { loading, success, error, makeRequest } = useRequestWithStatus();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(updatePlaylistIsSuccess(isSuccess));
-    dispatch(updatePlaylistIsError(isError));
-    dispatch(updatePlaylistIsLoading(isLoading));
-  }, [isSuccess, isError, isLoading, dispatch]);
+    dispatch(updatePlaylistIsSuccess(success));
+    dispatch(updatePlaylistIsError(error));
+    dispatch(updatePlaylistIsLoading(loading));
+  }, [success, error, loading, dispatch]);
+
+  const uris = useSelector((state: RootState) => state.setlist.uris);
+  const playlistName = useSelector(
+    (state: RootState) => state.playlistManagement.metadata.playlistName
+  );
+
+  const playlistArt = useSelector(
+    (state: RootState) => state.playlistManagement.metadata.playlistArt
+  );
 
   const createPlaylist = async () => {
     try {
-      await mutate();
+      await makeRequest(
+        createPlaylistOnSpotify,
+        uris,
+        playlistName,
+        playlistArt
+      );
     } catch (error) {
-      console.error("Error creating playlist:", error);
+      console.error(error);
     }
   };
 

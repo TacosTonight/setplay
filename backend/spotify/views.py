@@ -10,6 +10,8 @@ from .spotify_client_authentication import SpotifyClientAuthentication
 from .spotify_client_service import SpotifyClientService
 from setlist.setlist_client import SetlistClient
 from .spotify_user_service import SpotifyUserService
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 REDIRECT_URI = os.environ.get("REDIRECT_URI")
 CLIENT_ID = os.environ.get("CLIENT_ID")
@@ -37,31 +39,20 @@ class AuthURL(APIView):
 
 class IsAuthenticated(APIView):
     def get(self, request):
-        is_authed = spotify_auth.is_authenticated(self.request.session.session_key)
-        return Response({"status": is_authed}, status=status.HTTP_200_OK)
+        is_authed = spotify_auth.is_authenticated(request.session.session_key)
+        return Response({"authStatus": is_authed}, status=status.HTTP_200_OK)
 
 
-def spotify_callback(request):
-    code = request.GET.get("code")
-    error = request.GET.get("error")
-    if error:
-        return HttpResponse("Authentication denied")
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-    spotify_auth.request_new_tokens(request.session.session_key, code)
-    return redirect("auth-confirmation")
-
-
-def auth_confirmation(request):
-    return HttpResponse("temporary redirect page")
-
-
-def authenticate(request):
-    if request.method == "POST":
-        r = requests.get("http://127.0.0.1:8000/spotify/get-auth-url")
-        auth_url = r.json().get("url")
-        return redirect(auth_url)
-    return render(request, "spotify/auth.html")
+class SpotifyCallback(APIView):
+    def get(self, request):
+        code = request.GET.get("code")
+        error = request.GET.get("error")
+        if error:
+            return HttpResponse("Authentication denied")
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
+        spotify_auth.request_new_tokens(request.session.session_key, code)
+        return HttpResponse("Authenticated")
 
 
 # Spotify Client Authorized Tasks
@@ -90,11 +81,13 @@ class Setlist(APIView):
 
 
 # Spotify User Authorized Tasks
+@method_decorator(csrf_exempt, name="dispatch")
 class SpotifyPlaylist(APIView):
     def post(self, request):
         uris = request.data.get("uris", [])
         playlist_name = request.data.get("playlistName")
         playlist_art = request.data.get("playlistArt")
+        playlist_art = playlist_art.replace("data:image/jpeg;base64,", "").strip()
         access_token = spotify_auth.get_access_token(request.session.session_key)
         try:
             spotify_user_service.create_playlist(

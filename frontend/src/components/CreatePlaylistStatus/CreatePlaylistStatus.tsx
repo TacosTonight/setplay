@@ -10,10 +10,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
 
 const CreatePlaylistStatus = () => {
   const isSuccess = useSelector(
-    (state: RootState) => state.playlistManagement.isSuccess
+    (state: RootState) => state.playlistManagement.status.isSuccess
   );
   const isError = useSelector(
-    (state: RootState) => state.playlistManagement.isError
+    (state: RootState) => state.playlistManagement.status.isError
   );
 
   const [open, setOpen] = useState(false);
