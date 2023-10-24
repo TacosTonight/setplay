@@ -1,11 +1,11 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const GET_ARTISTS_URL = "http://127.0.0.1:8000/spotify/artists";
-const GET_SETLIST_URL = "http://127.0.0.1:8000/spotify/setlist";
-const AUTH_URL = "http://127.0.0.1:8000/spotify/get-auth-url";
-const IS_AUTH_URL = "http://127.0.0.1:8000/spotify/is-authed";
-const CREATE_PLAYLIST_URL = "http://127.0.0.1:8000/spotify/create-playlist";
+const GET_ARTISTS_URL = "/api/spotify/artists";
+const GET_SETLIST_URL = "/api/spotify/setlist";
+const AUTH_URL = "/api/spotify/get-auth-url";
+const IS_AUTH_URL = "/api/spotify/is-authed";
+const CREATE_PLAYLIST_URL = "/api/spotify/create-playlist";
 
 export const fetchArtists = async (
   artistInput: string
@@ -81,6 +81,7 @@ export const createPlaylistOnSpotify = async(uris: string[],playlistName: string
     );
     return response.data;
   } catch (error) {
+    console.log(error)
     throw error;
   }
 }

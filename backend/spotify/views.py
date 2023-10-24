@@ -81,7 +81,6 @@ class Setlist(APIView):
 
 
 # Spotify User Authorized Tasks
-@method_decorator(csrf_exempt, name="dispatch")
 class SpotifyPlaylist(APIView):
     def post(self, request):
         uris = request.data.get("uris", [])
