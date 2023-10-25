@@ -164,7 +164,7 @@ class ArtistViewTest(TestCase):
             request = self.factory.get(url, {"artist": "artist"})
             response = Artists.as_view()(request)
             self.assertEqual(200, response.status_code)
-            self.assertIn("data", response.data)
+            self.assertIn("artists", response.data)
 
 
 class SetlistViewTest(TestCase):
@@ -191,4 +191,4 @@ class SetlistViewTest(TestCase):
             request = self.factory.get(url, {"artist": "artist"})
             response = Setlist.as_view()(request)
             self.assertEqual(200, response.status_code)
-            self.assertIn("data", response.data)
+            self.assertIn("songs", response.data)
