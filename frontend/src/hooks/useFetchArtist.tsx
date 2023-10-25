@@ -7,6 +7,7 @@ export const useFetchArtists = (artistInput: string) => {
     queryKey: ["artists", artistInput],
     queryFn: () => fetchArtists(artistInput),
     enabled: !!artistInput,
+    staleTime: Infinity,
   });
   return { isLoading, isError, data, error };
 };
