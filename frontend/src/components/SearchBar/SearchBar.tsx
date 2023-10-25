@@ -7,6 +7,7 @@ import { setArtistName, setArtistImg } from "../../redux/artistNameSlice";
 import {
   updateSetlist,
   updateSetlistIsLoading,
+  resetSetlist,
 } from "../../redux/setlistSlice";
 import { useFetchArtists } from "../../hooks/useFetchArtist";
 import { useFetchSetlist } from "../../hooks/useFetchSetlist";
@@ -60,6 +61,7 @@ const SearchBar = () => {
   useEffect(() => {
     if (setlistError) {
       console.error("Error fetching setlist:", setlistError);
+      dispatch(resetSetlist());
     } else if (setlistData) {
       dispatch(updateSetlist(setlistData));
     }

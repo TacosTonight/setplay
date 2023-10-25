@@ -1,4 +1,4 @@
-import { List, ListItem, Skeleton } from "@mui/material";
+import { List, ListItem, Skeleton, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import SongItem from "../SongItem";
@@ -23,8 +23,10 @@ const Setlist = () => {
     <>
       {setlistIsLoading ? (
         <Skeleton variant="rounded" width="100%" height="100%"></Skeleton>
-      ) : (
+      ) : songs.length > 0 ? (
         <List sx={{ height: "100%", overflowY: "auto" }}>{renderedSongs}</List>
+      ) : (
+        <Typography variant="body1">No recent setlist found</Typography>
       )}
     </>
   );

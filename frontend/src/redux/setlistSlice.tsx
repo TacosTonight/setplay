@@ -29,8 +29,10 @@ const setlistSlice = createSlice({
     updateSetlistIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    resetSetlist: () => initialState,
   },
 });
 
-export const { updateSetlist, updateSetlistIsLoading } = setlistSlice.actions;
+export const { updateSetlist, updateSetlistIsLoading, resetSetlist } =
+  setlistSlice.actions;
 export default setlistSlice.reducer;

@@ -7,6 +7,9 @@ export const useFetchSetlist = (selectedArtist: string) => {
     queryKey: ["setlist", selectedArtist],
     queryFn: () => fetchSetlist(selectedArtist),
     enabled: !!selectedArtist,
+    retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
   return { isLoading, isError, data, error };
 };
