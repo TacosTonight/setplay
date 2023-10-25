@@ -18,7 +18,7 @@ const SearchBar = () => {
   const [value, setValue] = React.useState<Artist | null>(null);
   const [artistInput, setArtistInput] = React.useState("");
   const [options, setOptions] = React.useState<readonly Artist[]>([]);
-  const debouncedArtistInput = useDebounce(artistInput, 1000);
+  const debouncedArtistInput = useDebounce(artistInput, 300);
   const handleInputChange = (_e: React.SyntheticEvent, newValue: string) => {
     setArtistInput(newValue);
   };
@@ -73,6 +73,7 @@ const SearchBar = () => {
     <>
       <Autocomplete
         filterOptions={(x) => x}
+        autoHighlight
         freeSolo
         value={value}
         onChange={handleAutocompleteChange}
