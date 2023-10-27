@@ -1,4 +1,4 @@
-import { AppBar, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import SearchBar from "../SearchBar";
 
 const HeaderComponent = () => {

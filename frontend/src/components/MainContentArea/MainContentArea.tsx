@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Grid } from "@mui/material";
 import Setlist from "../Setlist";
 import SetlistStats from "../SetlistStats";
