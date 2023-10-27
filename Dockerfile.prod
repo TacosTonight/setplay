@@ -1,0 +1,83 @@
+####################
+# FRONTEND BUILDER #
+####################
+
+# Pull Baseimage
+FROM node:18-alpine as frontend-builder
+# Set working directory
+WORKDIR /code
+
+# Install dependencies
+COPY ./frontend/package.json .
+RUN yarn install
+
+# Copy Project
+COPY ./frontend . 
+
+# Build Project
+RUN yarn run build
+
+###################
+# BACKEND BUILDER #
+###################
+
+# Pull Baseimage
+FROM python:3.10-slim as backend-builder
+
+# Set working directory
+WORKDIR /code
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
+    
+RUN pip install --upgrade pip
+
+COPY ./backend .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir ./wheels -r requirements.txt
+
+
+#########
+# FINAL #
+#########
+
+# Pull Baseimage
+FROM python:3.10-slim
+# Create directory for the app user
+RUN mkdir -p /home/app
+
+# Create the app user
+RUN addgroup --system app && adduser --system --group app
+
+# Create the appropriate directories
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/staticfiles/dist
+WORKDIR $APP_HOME
+
+# Install dependencies
+COPY --from=backend-builder /code/wheels /wheels
+COPY --from=backend-builder /code/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+# Copy Frontend to static files
+COPY --from=frontend-builder /code/dist $APP_HOME/staticfiles/dist 
+
+# Copy Backend
+COPY ./backend $APP_HOME
+
+# Chown all the files to the app user
+RUN chown -R app:app $APP_HOME
+
+# Change to the app user
+USER app
+
+# Add this line to keep the container running
+CMD tail -f /dev/null
