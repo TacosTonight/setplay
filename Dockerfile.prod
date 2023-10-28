@@ -78,6 +78,3 @@ RUN chown -R app:app $APP_HOME
 
 # Change to the app user
 USER app
-
-# Add this line to keep the container running
-CMD tail -f /dev/null
