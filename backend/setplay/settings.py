@@ -23,17 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", default=0)
 
-ALLOWED_HOSTS = ["backend"]
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",
-]
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173"]
-CORS_ALLOWED_HEADERS = [
-    "Access-Control-Allow-Origin",
-    "Content-Type",
-]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(" ")
+CORS_ALLOWED_HEADERS = os.environ.get("CORS_ALLOWED_HEADERS", "").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(" ")
 
 CORS_ALLOW_CREDENTIALS = True
 
