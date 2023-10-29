@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   backend:
-    image: test_image:v1.0
+    image: test_image
     volumes:
       - static_volume:/home/app/web/staticfiles
     expose:

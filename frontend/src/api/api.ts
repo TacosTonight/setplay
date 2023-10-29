@@ -1,11 +1,11 @@
 import axios from "axios";
 import { ArtistMatches, Setlist } from "../types";
 
-const GET_ARTISTS_URL = "/api/spotify/artists";
-const GET_SETLIST_URL = "/api/spotify/setlist";
-const AUTH_URL = "/api/spotify/get-auth-url";
-const IS_AUTH_URL = "/api/spotify/is-authed";
-const CREATE_PLAYLIST_URL = "/api/spotify/create-playlist";
+const GET_ARTISTS_URL = "/spotify/artists";
+const GET_SETLIST_URL = "/spotify/setlist";
+const AUTH_URL = "/spotify/get-auth-url";
+const IS_AUTH_URL = "/spotify/is-authed";
+const CREATE_PLAYLIST_URL = "/spotify/create-playlist";
 
 export const fetchArtists = async (
   artistInput: string
