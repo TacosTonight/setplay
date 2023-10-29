@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   backend:
-    image: test_image
+    image: setplay
     volumes:
       - static_volume:/home/app/web/staticfiles
     expose:
