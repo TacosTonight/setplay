@@ -22,7 +22,7 @@ RUN yarn run build
 ###################
 
 # Pull Baseimage
-FROM python:3.10-slim as backend-builder
+FROM python:3.10-alpine as backend-builder
 
 # Set working directory
 WORKDIR /code
@@ -32,26 +32,24 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
-    
+RUN apk add --no-cache gcc
+
 RUN pip install --upgrade pip
 
-COPY ./backend .
+COPY ./backend /code
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir ./wheels -r requirements.txt
-
 
 #########
 # FINAL #
 #########
 
 # Pull Baseimage
-FROM python:3.10-slim
+FROM python:3.10-alpine
 # Create directory for the app user
 RUN mkdir -p /home/app
 
 # Create the app user
-RUN addgroup --system app && adduser --system --group app
+RUN addgroup -S app && adduser -S -G app app
 
 # Create the appropriate directories
 ENV HOME=/home/app
