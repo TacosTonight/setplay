@@ -5,10 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
+      '/spotify': {
         target: "http://backend:8000",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
         configure: (proxy, _options) => {
           proxy.on('error', (err, _req, _res) => {

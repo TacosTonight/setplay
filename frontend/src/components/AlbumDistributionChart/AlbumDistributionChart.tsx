@@ -11,11 +11,11 @@ type AlbumOccurrences = {
   label: string;
 };
 
-const StyledText = styled("text")(({ theme }) => ({
+const StyledText = styled("text")({
   textAnchor: "middle",
   dominantBaseline: "central",
   fontSize: 20,
-}));
+});
 
 type PieCenterLabelProps = {
   children: React.ReactNode;

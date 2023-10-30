@@ -1,4 +1,4 @@
-import { fetchArtists, simulateFetchArtists } from "../api/api";
+import { fetchArtists } from "../api/api";
 import { useQuery } from "react-query";
 import { ArtistMatches } from "../types";
 
