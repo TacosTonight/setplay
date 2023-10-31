@@ -1,22 +1,3 @@
-####################
-# FRONTEND BUILDER #
-####################
-
-# Pull Baseimage
-FROM node:18-alpine as frontend-builder
-# Set working directory
-WORKDIR /code
-
-# Install dependencies
-COPY ./frontend/package.json .
-RUN yarn install
-
-# Copy Project
-COPY ./frontend . 
-
-# Build Project
-RUN yarn run build
-
 ###################
 # BACKEND BUILDER #
 ###################
@@ -56,7 +37,6 @@ ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/react
 WORKDIR $APP_HOME
 
 # Install dependencies
@@ -64,9 +44,6 @@ COPY --from=backend-builder /code/wheels /wheels
 COPY --from=backend-builder /code/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
-
-# Copy Frontend to static files
-COPY --from=frontend-builder /code/dist $APP_HOME/react/dist 
 
 # Copy Backend
 COPY ./backend $APP_HOME
