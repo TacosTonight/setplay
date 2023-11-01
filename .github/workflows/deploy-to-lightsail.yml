@@ -1,0 +1,63 @@
+name: Deploy App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Get commit hash
+        id: get_commit_hash
+        run: echo "::set-output name=commit_hash::$(echo ${GITHUB_SHA} | cut -c1-7)"
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: |
+          npm install -g yarn
+          yarn install
+
+      - name: Build React Files
+        working-directory: ./frontend
+        run: |
+          yarn run build
+          yarn run move-dist
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.prod.frontend
+          push: true
+          tags: tacostonight/setplay:frontend-${{ steps.get_commit_hash.outputs.commit_hash }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.prod.backend
+          push: true
+          tags: tacostonight/setplay:backend-${{ steps.get_commit_hash.outputs.commit_hash }}
