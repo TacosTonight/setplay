@@ -100,5 +100,5 @@ jobs:
           host: ${{ secrets.LIGHTSAIL_IP }}
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_PK }}
-        script: |
-          docker-compose -f docker-compose.prod.yml up -d --build
+          script: |
+            docker-compose -f docker-compose.prod.yml up -d --build
