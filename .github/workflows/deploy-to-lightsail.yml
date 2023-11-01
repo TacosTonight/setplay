@@ -61,3 +61,19 @@ jobs:
           file: Dockerfile.prod.backend
           push: true
           tags: tacostonight/setplay:backend-${{ steps.get_commit_hash.outputs.commit_hash }}
+
+      - name: Set image names in docker-compose
+        run: |
+          sed -i 's|<IMAGE_BACKEND>|tacostonight/setplay-backend:${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
+          sed -i 's|<IMAGE_FRONTEND>|tacostonight/setplay-frontend:${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
+
+      - name: Copy updated docker-compose.yml
+        run: cp docker-compose.template.yml docker-compose.prod.yml
+
+      - name: Upload docker-compose.prod.yml as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-compose.prod.yml
+          path: docker-compose.prod.yml
+  deploy:
+    runs-on: asdf
