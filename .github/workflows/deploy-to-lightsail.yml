@@ -64,8 +64,8 @@ jobs:
 
       - name: Set image names in docker-compose
         run: |
-          sed -i 's|<IMAGE_BACKEND>|tacostonight/setplay-backend-${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
-          sed -i 's|<IMAGE_FRONTEND>|tacostonight/setplay-frontend-${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
+          sed -i 's|<IMAGE_BACKEND>|tacostonight/setplay:backend-${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
+          sed -i 's|<IMAGE_FRONTEND>|tacostonight/setplay:frontend-${{ steps.get_commit_hash.outputs.commit_hash }}|g' docker-compose.template.yml
 
       - name: Copy updated docker-compose.yml
         run: cp docker-compose.template.yml docker-compose.prod.yml
