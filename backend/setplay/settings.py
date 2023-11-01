@@ -25,10 +25,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(" ")
-CORS_ALLOWED_HEADERS = os.environ.get("CORS_ALLOWED_HEADERS", "").split(" ")
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(" ")
+if not os.environ.get("DJANGO_ENV") == "test":
+    ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
+    CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(" ")
+    CORS_ALLOWED_HEADERS = os.environ.get("CORS_ALLOWED_HEADERS", "").split(" ")
+    CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(" ")
+else:
+    ALLOWED_HOSTS = []
 
 CORS_ALLOW_CREDENTIALS = True
 
