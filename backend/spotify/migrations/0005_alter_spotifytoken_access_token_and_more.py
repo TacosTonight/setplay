@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('spotify', '0004_spotifytoken_modified_at'),
+        ("spotify", "0004_spotifytoken_modified_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='spotifytoken',
-            name='access_token',
-            field=models.CharField(max_length=200),
+            model_name="spotifytoken",
+            name="access_token",
+            field=models.CharField(max_length=300),
         ),
         migrations.AlterField(
-            model_name='spotifytoken',
-            name='refresh_token',
-            field=models.CharField(max_length=200),
+            model_name="spotifytoken",
+            name="refresh_token",
+            field=models.CharField(max_length=300),
         ),
     ]

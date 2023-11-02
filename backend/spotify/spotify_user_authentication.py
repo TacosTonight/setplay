@@ -47,7 +47,7 @@ class SpotifyUserAuthentication:
         response = handle_requests(self.token_url, method, data=data)
         try:
             SpotifyToken.objects.update_or_create(
-                user="debug",
+                user=session_id,
                 defaults=self.parse_spotify_auth(response, "authorization_code"),
             )
         except ValueError as errv:
@@ -67,7 +67,7 @@ class SpotifyUserAuthentication:
         response = handle_requests(self.token_url, method, data=data)
         try:
             SpotifyToken.objects.update_or_create(
-                user="debug",
+                user=session_id,
                 defaults=self.parse_spotify_auth(response, "refresh_token"),
             )
         except ValueError as errv:
