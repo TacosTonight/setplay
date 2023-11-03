@@ -14,6 +14,7 @@ import { useFetchSetlist } from "../../hooks/useFetchSetlist";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Artist, isArtist } from "../../types";
 import ArtistCard from "../ArtistCard";
+import { updatePlaylistIsSuccess } from "../../redux/playlistManagementSlice";
 
 const SearchBar = () => {
   const [value, setValue] = React.useState<Artist | null>(null);
@@ -64,6 +65,7 @@ const SearchBar = () => {
       dispatch(resetSetlist());
     } else if (setlistData) {
       dispatch(updateSetlist(setlistData));
+      dispatch(updatePlaylistIsSuccess(false));
     }
   }, [setlistData, setlistIsError, setlistError, dispatch]);
 
