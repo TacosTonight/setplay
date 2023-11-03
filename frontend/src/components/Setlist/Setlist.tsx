@@ -22,9 +22,17 @@ const Setlist = () => {
   return (
     <>
       {setlistIsLoading ? (
-        <Skeleton variant="rounded" width="100%" height="100%"></Skeleton>
+        <Skeleton
+          variant="rounded"
+          sx={{
+            width: { xs: "95vw", sm: "100%" },
+            height: { xs: "90vh", sm: "100%" },
+          }}
+        ></Skeleton>
       ) : songs.length > 0 ? (
-        <List sx={{ height: "100%", overflowY: "auto" }}>{renderedSongs}</List>
+        <List sx={{ width: "100vw", height: "100%", overflowY: "auto" }}>
+          {renderedSongs}
+        </List>
       ) : (
         <Typography variant="body1">No recent setlist found</Typography>
       )}
