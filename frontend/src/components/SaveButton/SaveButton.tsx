@@ -11,6 +11,11 @@ const SaveButton: React.FC<SaveButtonProps> = ({ createPlaylist }) => {
   const isLoading = useSelector(
     (state: RootState) => state.playlistManagement.status.isLoading
   );
+
+  const isSuccess = useSelector(
+    (state: RootState) => state.playlistManagement.status.isSuccess
+  );
+
   const renderButton = (isLoading: boolean) => {
     return isLoading ? (
       <Button
@@ -18,6 +23,10 @@ const SaveButton: React.FC<SaveButtonProps> = ({ createPlaylist }) => {
         disabled
         endIcon={<CircularProgress size="0.75em" />}
       >
+        Save
+      </Button>
+    ) : isSuccess ? (
+      <Button disabled variant="contained">
         Save
       </Button>
     ) : (

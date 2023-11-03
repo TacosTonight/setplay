@@ -37,7 +37,12 @@ const CreatePlaylistStatus = () => {
   const renderSnackbar = () => {
     if (isSuccess) {
       return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar
+          disableWindowBlurListener
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
           <Alert
             onClose={handleClose}
             severity="success"
@@ -51,7 +56,7 @@ const CreatePlaylistStatus = () => {
 
     if (isError) {
       return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
             Spotify Playlist Not Created
           </Alert>
