@@ -52,7 +52,7 @@ class SpotifyCallback(APIView):
         if not request.session.exists(request.session.session_key):
             request.session.create()
         spotify_auth.request_new_tokens(request.session.session_key, code)
-        return HttpResponse("Authenticated")
+        return redirect(os.environ.get("APP_URL"))
 
 
 # Spotify Client Authorized Tasks

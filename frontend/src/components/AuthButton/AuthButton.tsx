@@ -34,26 +34,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({ createPlaylist }) => {
   const handleLogin = async () => {
     try {
       const url = await createAuthURL();
-
-      const width = 600;
-      const height = 400;
-      const leftPosition = 325;
-      const topPosition = 200;
-
-      const features = `width=${width},height=${height},left=${leftPosition},top=${topPosition},scrollbars=yes,resizable=yes`;
-
-      const newWindow = window.open(url, "SmallerWindow", features);
-
-      if (newWindow) {
-        const checkIfClosed = setInterval(() => {
-          if (newWindow.closed) {
-            clearInterval(checkIfClosed);
-            checkAuth();
-          }
-        }, 1000); // Check every second
-      } else {
-        console.error("Popup blocked by browser or other issue");
-      }
+      window.location.replace(url);
     } catch (error) {
       console.error(error);
     }
