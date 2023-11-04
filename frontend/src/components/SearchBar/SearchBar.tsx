@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -15,6 +15,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { Artist, isArtist } from "../../types";
 import ArtistCard from "../ArtistCard";
 import { updatePlaylistIsSuccess } from "../../redux/playlistManagementSlice";
+import { RootState } from "../../redux";
 
 const SearchBar = () => {
   const [value, setValue] = React.useState<Artist | null>(null);
@@ -32,10 +33,18 @@ const SearchBar = () => {
   ) => {
     if (isArtist(newValue)) {
       setValue(newValue);
+      localStorage.setItem("artist", JSON.stringify(newValue));
       dispatch(setArtistName(newValue.name));
       dispatch(setArtistImg(newValue.imgUrl));
     }
   };
+
+  const artist = useSelector((state: RootState) => state.artist);
+  useEffect(() => {
+    if (artist !== null) {
+      setValue(artist);
+    }
+  }, [artist]);
 
   const {
     data: artistsData,
@@ -64,6 +73,8 @@ const SearchBar = () => {
       console.error("Error fetching setlist:", setlistError);
       dispatch(resetSetlist());
     } else if (setlistData) {
+      localStorage.setItem("setlist", JSON.stringify(setlistData));
+      localStorage.setItem("showWelcomeScreen", JSON.stringify(false));
       dispatch(updateSetlist(setlistData));
       dispatch(updatePlaylistIsSuccess(false));
     }

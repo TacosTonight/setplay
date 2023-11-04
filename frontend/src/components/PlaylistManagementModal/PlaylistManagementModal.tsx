@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Modal, Box, Tabs, Tab } from "@mui/material";
 import CreateNew from "../CreateNew";
 import SaveButton from "../SaveButton";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,6 +31,20 @@ const style = {
   p: 4,
 };
 
+const styleMobile = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "80%",
+  height: "70vh",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  maxHeight: "70vh",
+  boxShadow: 24,
+  p: 4,
+};
+
 type PlaylistManagementModalProps = {
   open: boolean;
   onClose: () => void;
@@ -44,10 +60,12 @@ const PlaylistManagementModal: React.FC<PlaylistManagementModalProps> = ({
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
+  const theme = useTheme();
+  const small = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
+      <Box sx={small ? style : styleMobile}>
         <Tabs value={tab} onChange={handleChange} centered>
           <Tab label="Create New Playlist" />
           {/* <Tab label="or" disabled />
