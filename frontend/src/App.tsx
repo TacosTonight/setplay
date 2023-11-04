@@ -9,6 +9,10 @@ import { RootState } from "./redux";
 import { isUserAuthed } from "./api/api";
 import { updateIsAuthToSpotify } from "./redux/isAuthToSpotifySlice";
 import CreatePlaylistStatus from "./components/CreatePlaylistStatus";
+import { Artist, Setlist } from "./types";
+import { updateSetlist } from "./redux/setlistSlice";
+import { setArtistName, setArtistImg } from "./redux/artistNameSlice";
+import { useQueryClient } from "react-query";
 
 function App() {
   // Apply custom CSS to remove margin from body
@@ -16,6 +20,7 @@ function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(false);
   const [showMainContentArea, setShowMainContentArea] = useState(false);
   const songs = useSelector((state: RootState) => state.artist.name);
+  const queryClient = useQueryClient();
 
   const dispatch = useDispatch();
 
@@ -28,9 +33,37 @@ function App() {
     }
   };
 
+  const loadLocalStorage = () => {
+    const localStorageSetlist = localStorage.getItem("setlist");
+    const localStorageShowWelcomeScreen =
+      localStorage.getItem("showWelcomeScreen");
+    const localStorageArtist = localStorage.getItem("artist");
+
+    let setlist: Setlist | null = null;
+    let showWelcomeScreen: boolean | null = null;
+    let artist: Artist | null = null;
+
+    if (localStorageSetlist !== null && localStorageArtist !== null) {
+      setlist = JSON.parse(localStorageSetlist);
+      artist = JSON.parse(localStorageArtist);
+      if (setlist !== null && artist !== null) {
+        dispatch(updateSetlist(setlist));
+        dispatch(setArtistName(artist.name));
+        dispatch(setArtistImg(artist.imgUrl));
+        queryClient.setQueryData(["setlist", artist.name], setlist);
+      }
+    }
+    if (localStorageShowWelcomeScreen !== null) {
+      showWelcomeScreen = JSON.parse(localStorageShowWelcomeScreen);
+      if (showWelcomeScreen !== null) {
+        setShowWelcomeScreen(showWelcomeScreen);
+      }
+    }
+  };
+
   useEffect(() => {
     checkAuth();
-    setShowWelcomeScreen(true);
+    loadLocalStorage();
   }, []);
 
   useEffect(() => {

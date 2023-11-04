@@ -3,9 +3,6 @@ import { Button, Stack, Typography } from "@mui/material";
 import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
 import { createAuthURL } from "../../api/api";
-import { isUserAuthed } from "../../api/api";
-import { useDispatch } from "react-redux";
-import { updateIsAuthToSpotify } from "../../redux/isAuthToSpotifySlice";
 import SpotifyLogo from "../../assets/Spotify_Logo_CMYK_Black.png";
 import PlaylistManagementModal from "../PlaylistManagementModal";
 
@@ -18,18 +15,8 @@ const AuthButton: React.FC<AuthButtonProps> = ({ createPlaylist }) => {
     (state: RootState) => state.isAuthToSpotify.isAuth
   );
   const [open, setOpen] = useState(false);
-
-  const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const checkAuth = async () => {
-    try {
-      const isAuthed = await isUserAuthed();
-      dispatch(updateIsAuthToSpotify(isAuthed));
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   const handleLogin = async () => {
     try {

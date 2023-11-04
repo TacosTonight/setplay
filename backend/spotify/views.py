@@ -48,7 +48,7 @@ class SpotifyCallback(APIView):
         code = request.GET.get("code")
         error = request.GET.get("error")
         if error:
-            return HttpResponse("Authentication denied")
+            return redirect(os.environ.get("APP_URL"))
         if not request.session.exists(request.session.session_key):
             request.session.create()
         spotify_auth.request_new_tokens(request.session.session_key, code)
