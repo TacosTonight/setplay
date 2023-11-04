@@ -57,9 +57,9 @@ function App() {
       showWelcomeScreen = JSON.parse(localStorageShowWelcomeScreen);
       if (showWelcomeScreen !== null) {
         setShowWelcomeScreen(showWelcomeScreen);
-      } else {
-        setShowWelcomeScreen(true);
       }
+    } else {
+      setShowWelcomeScreen(true);
     }
   };
 
