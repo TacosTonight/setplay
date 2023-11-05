@@ -14,13 +14,24 @@ const AuthButton: React.FC<AuthButtonProps> = ({ createPlaylist }) => {
   const isAuth = useSelector(
     (state: RootState) => state.isAuthToSpotify.isAuth
   );
+  const artist = useSelector((state: RootState) => state.artist);
+  const setlist = useSelector((state: RootState) => state.setlist);
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    localStorage.clear();
+  };
   const handleClose = () => setOpen(false);
 
   const handleLogin = async () => {
     try {
       const url = await createAuthURL();
+      localStorage.setItem("artist", JSON.stringify(artist));
+      localStorage.setItem("setlist", JSON.stringify({ songs: setlist.songs }));
+      localStorage.setItem("showWelcomeScreen", JSON.stringify(false));
+      const timestamp = Date.now();
+      localStorage.setItem("timeSaved", JSON.stringify(timestamp));
       window.location.replace(url);
     } catch (error) {
       console.error(error);
