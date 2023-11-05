@@ -33,7 +33,6 @@ const SearchBar = () => {
   ) => {
     if (isArtist(newValue)) {
       setValue(newValue);
-      localStorage.setItem("artist", JSON.stringify(newValue));
       dispatch(setArtistName(newValue.name));
       dispatch(setArtistImg(newValue.imgUrl));
     }
@@ -73,8 +72,6 @@ const SearchBar = () => {
       console.error("Error fetching setlist:", setlistError);
       dispatch(resetSetlist());
     } else if (setlistData) {
-      localStorage.setItem("setlist", JSON.stringify(setlistData));
-      localStorage.setItem("showWelcomeScreen", JSON.stringify(false));
       dispatch(updateSetlist(setlistData));
       dispatch(updatePlaylistIsSuccess(false));
     }
